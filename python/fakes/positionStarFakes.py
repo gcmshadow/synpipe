@@ -11,25 +11,25 @@ import lsst.afw.coord as afwCoord
 import lsst.afw.image as afwImage
 import lsst.pex.config as afwConfig
 
-from lsst.pipe.tasks.fakes import FakeSourcesConfig, FakeSourcesTask
+from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 
 import FakeSourceLib as fsl
 
 
-class PositionStarFakesConfig(FakeSourcesConfig):
+class PositionStarFakesConfig(BaseFakeSourcesConfig):
     starList = afwConfig.Field(dtype=str,
                                doc="Catalog of stars with mags ra/dec")
     seed = afwConfig.Field(dtype=int, default=1,
                            doc="Seed for random number generator")
 
 
-class PositionStarFakesTask(FakeSourcesTask):
+class PositionStarFakesTask(BaseFakeSourcesTask):
     ConfigClass = PositionStarFakesConfig
 
     def __init__(self, **kwargs):
-        FakeSourcesTask.__init__(self, **kwargs)
-        print "RNG seed:", self.config.seed
-        self.rng = afwMath.Random(self.config.seed)
+        BaseFakeSourcesTask.__init__(self, **kwargs)
+        print("RNG seed:", self.config.seed)
+        self.rng = afwMath.Random(seed=self.config.seed)
         self.npRand = np.random.RandomState(self.config.seed)
         try:
             self.starData = fits.open(self.config.starList)[1].data

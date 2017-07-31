@@ -47,23 +47,8 @@ def addNoise(galImage, detector, rand_gen=None):
             variance plane
     giving the variance due to the object
     """
-    ccd = lsst.afw.cameraGeom.cast_Ccd(detector)
-    gainImage = galImage.Factory(galImage, True)
-    gainImage.set(0.0)
-    for ampId in (1, 2, 3, 4):
-        amp = ccd.findAmp(lsst.afw.cameraGeom.Id(ampId))
-        ampBBox = amp.getDataSec()
-        clippedBBox = gainImage.getBBox(lsst.afw.image.PARENT)
-        clippedBBox.clip(ampBBox)
-        if clippedBBox.getArea() > 0:
-            tempImage = gainImage.Factory(gainImage, clippedBBox,
-                                          lsst.afw.image.PARENT)
-            tempImage.set(amp.getElectronicParams().getGain())
-            del tempImage
-
     # TODO: this is gaussian noise right now, probably good enough
     varImage = galImage.Factory(galImage, True)
-    varImage /= gainImage
     if rand_gen is None:
         rand_gen = np.random
     scale = np.sqrt(np.abs(varImage.getArray())) + 1e-12

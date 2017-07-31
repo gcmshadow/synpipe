@@ -5,13 +5,13 @@ import lsst.afw.geom
 import lsst.afw.math
 import lsst.afw.cameraGeom
 import lsst.pex.config
-from lsst.pipe.tasks.fakes import FakeSourcesConfig, FakeSourcesTask
+from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 import pyfits as fits
 
-import makeFakeGalaxy as makeFake
-import FakeSourceLib as fsl
+import fakes.makeFakeGalaxy as makeFake
+import fakes.FakeSourceLib as fsl
 
-class RandomGalSimFakesConfig(FakeSourcesConfig):
+class RandomGalSimFakesConfig(BaseFakeSourcesConfig):
     galList = lsst.pex.config.Field(dtype=str, doc="catalog of galaxies to add")
     margin = lsst.pex.config.Field(dtype=int, default=None, optional=True,
                                    doc="Size of margin at edge that should not be added")
@@ -22,17 +22,17 @@ class RandomGalSimFakesConfig(FakeSourcesConfig):
                                                    'sersic':'single sersic galaxies added',
                                                    'real':'real HST galaxy images added'},
                                           doc='type of GalSim galaxies to add')
-    nGal = lsst.pex.config.Field(dtype=int, doc="""number of galaxies to add, if 0, then everything in catalog, 
+    nGal = lsst.pex.config.Field(dtype=int, doc="""number of galaxies to add, if 0, then everything in catalog,
  otherwise a random subset of nGal from the catalog""", default=0)
 
 
-class RandomGalSimFakesTask(FakeSourcesTask):
+class RandomGalSimFakesTask(BaseFakeSourcesTask):
     ConfigClass = RandomGalSimFakesConfig
 
     def __init__(self, **kwargs):
-        FakeSourcesTask.__init__(self, **kwargs)
-        print "RNG seed:", self.config.seed
-        self.rng = lsst.afw.math.Random(self.config.seed)
+        BaseFakeSourcesTask.__init__(self, **kwargs)
+        print("RNG seed:", self.config.seed)
+        self.rng = lsst.afw.math.Random(seed=self.config.seed)
         self.npRand = np.random.RandomState(self.config.seed)
         self.galData = fits.open(self.config.galList)[1].data
 
@@ -42,7 +42,7 @@ class RandomGalSimFakesTask(FakeSourcesTask):
         self.log.info("Adding fake random galaxies")
         psf = exposure.getPsf()
         psfBBox = psf.computeImage().getBBox()
-        minMargin =  max(psfBBox.getWidth(), psfBBox.getHeight())/2 + 1
+        minMargin = int(np.floor(max(psfBBox.getWidth(), psfBBox.getHeight())/2)) + 1
         md = exposure.getMetadata()
         expBBox = exposure.getBBox()
         scalingMatrix = np.array([[0.0,1.0],[1.0,0.0]]) / exposure.getWcs().pixelScale().asArcseconds()
@@ -88,7 +88,7 @@ class RandomGalSimFakesTask(FakeSourcesTask):
                                                  'lanczos3')
             galBBox = galImage.getBBox(lsst.afw.image.PARENT)
 
-            
+
            #check that we're within the larger exposure, otherwise crop
             if expBBox.contains(galImage.getBBox(lsst.afw.image.PARENT)) is False:
                 newBBox = galImage.getBBox(lsst.afw.image.PARENT)
@@ -97,11 +97,11 @@ class RandomGalSimFakesTask(FakeSourcesTask):
                 galImage = galImage.Factory(galImage, newBBox, lsst.afw.image.PARENT)
                 galBBox = newBBox
 
-            
+
             galMaskedImage = fsl.addNoise(galImage, exposure.getDetector(), rand_gen=self.npRand)
             mask = galMaskedImage.getMask()
             mask.set(self.bitmask)
-            
+
             md.set("FAKE%d" % gal['ID'], "%.3f, %.3f" % (x, y))
             self.log.info("Adding fake at: %.1f,%.1f"% (x, y))
 
@@ -111,4 +111,3 @@ class RandomGalSimFakesTask(FakeSourcesTask):
                                                                galMaskedImage.getBBox(lsst.afw.image.PARENT),
                                                                lsst.afw.image.PARENT)
             subMaskedImage += galMaskedImage
-

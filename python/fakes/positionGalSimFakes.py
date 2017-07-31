@@ -14,13 +14,13 @@ import lsst.afw.cameraGeom
 import lsst.afw.coord
 import lsst.pex.config as lsstConfig
 
-from lsst.pipe.tasks.fakes import FakeSourcesConfig, FakeSourcesTask
+from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 
 import FakeSourceLib as fsl
 import makeFakeGalaxy as makeFake
 
 
-class PositionGalSimFakesConfig(FakeSourcesConfig):
+class PositionGalSimFakesConfig(BaseFakeSourcesConfig):
     galList = lsstConfig.Field(dtype=str,
                                doc="catalog of galaxies to add")
     maxMargin = lsstConfig.Field(dtype=int, default=600,
@@ -52,13 +52,13 @@ class PositionGalSimFakesConfig(FakeSourcesConfig):
                                             doc='Exclusion level')
 
 
-class PositionGalSimFakesTask(FakeSourcesTask):
+class PositionGalSimFakesTask(BaseFakeSourcesTask):
     ConfigClass = PositionGalSimFakesConfig
 
     def __init__(self, **kwargs):
-        FakeSourcesTask.__init__(self, **kwargs)
-        print "RNG seed:", self.config.seed
-        self.rng = lsst.afw.math.Random(self.config.seed)
+        BaseFakeSourcesTask.__init__(self, **kwargs)
+        print("RNG seed:", self.config.seed)
+        self.rng = lsst.afw.math.Random(seed=self.config.seed)
         self.npRand = np.random.RandomState(self.config.seed)
         self.galData = fits.open(self.config.galList)[1].data
 
@@ -245,11 +245,12 @@ class PositionGalSimFakesTask(FakeSourcesTask):
                                                             galXY.getY()))
 
             galMaskedImage.getMask().set(self.bitmask)
-            try:
-                galMaskedImage.getMask().removeAndClearMaskPlane('FAKE',
-                                                                 True)
-            except Exception:
-                pass
+            if not self.config.addMask:
+                try:
+                    galMaskedImage.getMask().removeAndClearMaskPlane('FAKE',
+                                                                     True)
+                except Exception:
+                    pass
             try:
                 galMaskedImage.getMask().removeAndClearMaskPlane('CROSSTALK',
                                                                  True)
@@ -272,10 +273,11 @@ class PositionGalSimFakesTask(FakeSourcesTask):
                                                               True)
             except Exception:
                 pass
-            try:
-                maskedImage.getMask().removeAndClearMaskPlane('FAKE', True)
-            except Exception:
-                pass
+            if not self.config.addMask:
+                try:
+                    maskedImage.getMask().removeAndClearMaskPlane('FAKE', True)
+                except Exception:
+                    pass
 
             BBox = galMaskedImage.getBBox(PARENT)
             subMaskedImage = maskedImage.Factory(exposure.getMaskedImage(),

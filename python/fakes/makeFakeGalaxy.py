@@ -420,11 +420,11 @@ def galSimFakeSersic(flux, gal, psfImage=None, scaleRad=False, returnObj=True,
         else:
             serObj = galsim.Exponential(half_light_radius=reff)
         if expAll:
-            print " * Treated as a n=1 Exponential disk : %d" % (gal["ID"])
+            print(" * Treated as a n=1 Exponential disk : %d" % (gal["ID"]))
     elif nSersic == 4.0 or devAll:
         serObj = galsim.DeVaucouleurs(half_light_radius=reff, trunc=trunc)
         if devAll:
-            print " * Treated as a n=4 De Vaucouleurs model: %d" % (gal["ID"])
+            print(" * Treated as a n=4 De Vaucouleurs model: %d" % (gal["ID"]))
     elif nSersic <= 0.9:
         serObj = galsim.Sersic(nSersic, half_light_radius=reff)
     else:
@@ -616,18 +616,18 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
 
             flux = 10.0 ** ((27.0 - gal['mag']) / 2.5)
 
-            print '\n---------------------------------'
-            print " Input Flux : ", flux
-            print " Input Parameters : ", gal["sersic_n"], gal["reff"]
-            print "                    ", gal["b_a"], gal["theta"]
+            print('\n---------------------------------')
+            print(" Input Flux : ", flux)
+            print(" Input Parameters : ", gal["sersic_n"], gal["reff"])
+            print("                    ", gal["b_a"], gal["theta"])
 
             galArray = galSimFakeSersic(flux, gal, psfImage=psfImage,
                                         plotFake=True, returnObj=False,
                                         trunc=12.0, drawMethod="no_pixel")
 
-            print " Output Flux : ", np.sum(galArray)
-            print " Shape of the Output Array : ", galArray.shape
-            print '---------------------------------'
+            print(" Output Flux : ", np.sum(galArray))
+            print(" Shape of the Output Array : ", galArray.shape)
+            print('---------------------------------')
 
     # Test DoubleSersic
     if double:
@@ -640,8 +640,8 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
 
             flux = 10.0 ** ((27.0 - gal['mag']) / 2.5)
 
-            print '\n---------------------------------'
-            print " Input Flux : ", flux
+            print('\n---------------------------------')
+            print(" Input Flux : ", flux)
 
             (comp1, comp2) = parseDoubleSersic(flux, gal)
 
@@ -654,16 +654,16 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
             # It seems that b/a = 0.25 is fine, so right now, just change the
             # lower limit of b/a to 0.25
 
-            print " Flux for Component 1 : ", comp1['mag']
-            print " Flux for Component 2 : ", comp2['mag']
-            print " Comp 1 Parameters : %5.2f  %8.2f" % (comp1["sersic_n"],
-                                                         comp1["reff"])
-            print "                     %5.2f  %8.2f" % (comp1["b_a"],
-                                                         comp1["theta"])
-            print " Comp 2 Parameters : %5.2f  %8.2f" % (comp2["sersic_n"],
-                                                         comp2["reff"])
-            print "                     %5.2f  %8.2f" % (comp2["b_a"],
-                                                         comp2["theta"])
+            print(" Flux for Component 1 : ", comp1['mag'])
+            print(" Flux for Component 2 : ", comp2['mag'])
+            print(" Comp 1 Parameters : %5.2f  %8.2f" % (comp1["sersic_n"],
+                                                         comp1["reff"]))
+            print("                     %5.2f  %8.2f" % (comp1["b_a"],
+                                                         comp1["theta"]))
+            print(" Comp 2 Parameters : %5.2f  %8.2f" % (comp2["sersic_n"],
+                                                         comp2["reff"]))
+            print("                     %5.2f  %8.2f" % (comp2["b_a"],
+                                                         comp2["theta"]))
 
             doubleArray = galSimFakeDoubleSersic(comp1, comp2,
                                                  psfImage=psfImage,
@@ -671,9 +671,9 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
                                                  devExp=True, plotFake=True,
                                                  drawMethod='no_pixel')
 
-            print " Output Flux : ", np.sum(doubleArray)
-            print " Shape of the Output Array : ", doubleArray.shape
-            print '---------------------------------'
+            print(" Output Flux : ", np.sum(doubleArray))
+            print(" Shape of the Output Array : ", doubleArray.shape)
+            print('---------------------------------')
 
     # Test RealGalaxy
     if real:
@@ -707,9 +707,9 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
                                          returnObj=False,
                                          drawMethod='no_pixel')
 
-            print '\n---------------------------------'
-            print " Input Flux : ", flux
+            print('\n---------------------------------')
+            print(" Input Flux : ", flux)
 
-            print " Output Flux : ", np.sum(realArray)
-            print " Shape of the Output Array : ", realArray.shape
-            print '---------------------------------'
+            print(" Output Flux : ", np.sum(realArray))
+            print(" Shape of the Output Array : ", realArray.shape)
+            print('---------------------------------')

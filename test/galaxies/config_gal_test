@@ -1,4 +1,4 @@
-from fakes import randomGalSimFakes
+from lsst.synpipe import randomGalSimFakes
 import os
 
 root.fakes.retarget(randomGalSimFakes.RandomGalSimFakesTask)

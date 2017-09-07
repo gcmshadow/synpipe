@@ -11,7 +11,7 @@ import lsst.pipe.base as pipeBase
 import lsst.pex.config as pexConfig
 import lsst.pipe.tasks.coaddBase as coaddBase
 
-import fakes.makeRaDecCat as makeRaDecCat
+import lsst.synpipe.makeRaDecCat as makeRaDecCat
 
 
 class MakeFakeInputsConfig(pexConfig.Config):

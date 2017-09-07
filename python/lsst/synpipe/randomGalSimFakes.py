@@ -8,8 +8,8 @@ import lsst.pex.config
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 import pyfits as fits
 
-import fakes.makeFakeGalaxy as makeFake
-import fakes.FakeSourceLib as fsl
+import lsst.synpipe.makeFakeGalaxy as makeFake
+import lsst.synpipe.FakeSourceLib as fsl
 
 class RandomGalSimFakesConfig(BaseFakeSourcesConfig):
     galList = lsst.pex.config.Field(dtype=str, doc="catalog of galaxies to add")

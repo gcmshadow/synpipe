@@ -5,7 +5,7 @@ matches fakes based on position stored in the calibrated exposure image header
 """
 
 import argparse
-import fakes.matchFakes as matchFakes
+import lsst.synpipe.matchFakes as matchFakes
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

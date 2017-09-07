@@ -4,7 +4,7 @@ import lsst.afw.math
 import lsst.pex.config
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 
-import fakes.FakeSourceLib as fsl
+import lsst.synpipe.FakeSourceLib as fsl
 import numpy as np
 
 class RandomStarFakeSourcesConfig(BaseFakeSourcesConfig):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
 
-from fakes.addFakes import addFakesTask
+from lsst.synpipe.addFakes import addFakesTask
 
 addFakesTask.parseAndSubmit()

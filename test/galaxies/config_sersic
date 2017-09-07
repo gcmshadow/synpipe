@@ -1,4 +1,4 @@
-from fakes import randomGalSimFakes
+from lsst.synpipe import randomGalSimFakes
 
 root.fakes.retarget(randomGalSimFakes.RandomGalSimFakesTask)
 root.fakes.galList = 'sersic_test.fits'

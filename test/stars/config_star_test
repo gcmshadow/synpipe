@@ -1,4 +1,4 @@
-import fakes.randomStarFakes as randomStarFakes
+import lsst.synpipe.randomStarFakes as randomStarFakes
 import os
 
 root.fakes.retarget(randomStarFakes.RandomStarFakeSourcesTask)

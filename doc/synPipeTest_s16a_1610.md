@@ -289,7 +289,7 @@
 
 * Example config file: 
     ```
-    from fakes import positionStarFakes
+    from lsst.synpipe import positionStarFakes
     
     root.fakes.retarget(positionStarFakes.PositionStarFakesTask)
     root.fakes.starList = 'star_9699_HSC-G.fits'
@@ -388,7 +388,7 @@
 
 * Example config file: 
     ```
-    from fakes import positionStarFakes
+    from lsst.synpipe import positionStarFakes
     
     root.fakes.retarget(positionStarFakes.PositionStarFakesTask)
     root.fakes.starList = 'star_8764_HSC-G.fits'
@@ -491,7 +491,7 @@
 
 * Example config file: 
     ```
-    from fakes import positionStarFakes
+    from lsst.synpipe import positionStarFakes
     
     root.fakes.retarget(positionStarFakes.PositionStarFakesTask)
     root.fakes.starList = 'jijia_qso_HSC-G.fits'
@@ -594,7 +594,7 @@
 
 * Example config file: 
     ```
-    from fakes import positionGalSimFakes
+    from lsst.synpipe import positionGalSimFakes
     root.fakes.retarget(positionGalSimFakes.PositionGalSimFakesTask)
     root.fakes.galList = 'galaxy_all_9699_HSC-G.fits'
     root.fakes.galType = 'sersic'
@@ -699,7 +699,7 @@
 
 * Example config file: 
     ```
-    from fakes import positionGalSimFakes
+    from lsst.synpipe import positionGalSimFakes
     root.fakes.retarget(positionGalSimFakes.PositionGalSimFakesTask)
     root.fakes.galList = 'galaxy_all_8764_HSC-G.fits'
     root.fakes.galType = 'sersic'

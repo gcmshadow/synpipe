@@ -1,0 +1,10 @@
+setupRequired(astropy)
+setupRequired(daf_persistence)
+setupRequired(pex_config)
+setupRequired(afw)
+setupRequired(pipe_base)
+setupRequired(pipe_tasks)
+
+
+envPrepend(PYTHONPATH, ${PRODUCT_DIR}/python)
+envPrepend(PATH, ${PRODUCT_DIR}/bin)

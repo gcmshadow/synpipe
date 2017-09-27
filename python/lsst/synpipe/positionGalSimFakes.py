@@ -125,7 +125,12 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
             # This is extrapolating for the PSF, probably not a good idea
             #  Return an Image of the PSF, in a form suitable for convolution.
             #  The returned image is normalized to sum to unity.
-            psfImage = psf.computeKernelImage(galXY)
+	    try:
+                psfImage = psf.computeKernelImage(galXY)
+	    except:
+		# There may not be any data at this point, and the object
+		# should be skipped
+		continue
             try:
                 addShear = self.config.addShear
                 prec = self.config.sersic_prec

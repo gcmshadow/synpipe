@@ -4,6 +4,7 @@ runMatchFakes.py
 matches fakes based on position stored in the calibrated exposure image header
 """
 
+from builtins import range
 import argparse
 import lsst.synpipe.matchFakes as matchFakes
 
@@ -51,7 +52,7 @@ if __name__ == '__main__':
 
     if (args.ccd is None) or (len(args.ccd) < 1):
         if args.filt is None:
-            args.ccd = range(104)
+            args.ccd = list(range(104))
         else:
             """hack, assumes 11x11 patches per CCD"""
             args.ccd = ['%d,%d' % (x, y) for x in range(11) for y in range(11)]

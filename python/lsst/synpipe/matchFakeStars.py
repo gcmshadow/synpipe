@@ -5,6 +5,8 @@ matches fakes based on position stored in the calibrated exposure image header
 """
 from __future__ import print_function
 
+from builtins import map
+from builtins import range
 import lsst.daf.persistence as dafPersist
 from lsst.afw.table.tableLib import SourceCatalog
 import numpy as np
@@ -38,7 +40,7 @@ def getFakeSources(rootdir, dataId, tol=0.1):
     for card in cal_md.names():
         m = fakename.match(card)
         if m is not None:
-            x, y = map(float, (cal_md.get(card)).split(','))
+            x, y = list(map(float, (cal_md.get(card)).split(',')))
             fakeXY[int(m.group(1))] = (x, y)
 
     srcIndex = collections.defaultdict(list)

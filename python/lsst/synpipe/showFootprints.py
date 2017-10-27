@@ -4,6 +4,8 @@ function to show a list of src footprints in a mosaic
 """
 from __future__ import absolute_import
 
+from builtins import str
+from builtins import range
 import argparse
 
 import lsst.afw.image
@@ -73,7 +75,7 @@ def main(root, visit, ccd, fakes=None, blends=False, listobj=16, filt=None):
     exposure = butler.get('calexp' if filt is None else 'deepCoadd', dataId)
 
     if type(listobj) is int:
-        listobj = numpy.random.choice(range(len(src)), listobj, False)
+        listobj = numpy.random.choice(list(range(len(src))), listobj, False)
 
     srcList = [src[i] for i in listobj]
 

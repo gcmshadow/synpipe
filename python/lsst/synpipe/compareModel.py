@@ -55,11 +55,11 @@ def writeNumpyTable(fakeTable):
                                            'expPosAng', 'devPosAng',
                                            'cmodelMagErr', 'expMagErr',
                                            'devMagErr', 'nchild', 'parent'],
-                                 'formats': [long, int, int, int,
+                                 'formats': [int, int, int, int,
                                              float, float,
                                              float, float, float, float,
                                              float, float, float, float,
-                                             float, float, int, long]})
+                                             float, float, int, int]})
     for indFake, fake in enumerate(fakeTable):
         npTable[indFake]['id'] = fake.get('id')
         npTable[indFake]['fakeid'] = fake.get('fakeId')

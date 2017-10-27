@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
+from builtins import str
+from builtins import map
+from builtins import zip
+from builtins import range
 import re
 import os
 import argparse
@@ -54,7 +58,7 @@ def getGalaxy(rootdir, visit, ccd, tol):
         m = fakename.match(card)
         if m is not None:
             # Get the X,Y location for fake object
-            x, y = map(float, (cal_md.get(card)).split(','))
+            x, y = list(map(float, (cal_md.get(card)).split(',')))
             # Get the ID or index of the fake object
             fakeID = int(m.group(1))
             fakeList[counts] = [fakeID, x, y]

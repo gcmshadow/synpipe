@@ -2,6 +2,7 @@
 # encoding: utf-8
 """Make a catalog of fakes that are highly blended."""
 
+from builtins import range
 from __future__ import (division, print_function)
 
 import os
@@ -39,7 +40,7 @@ def makeBlendedCat(fakeCat, realCat, raCol='ra', decCol='dec',
         print("# There are %d real galaxies in the catalog" % nReal)
 
     # Randomly select nFake galaxies from the realCat
-    indices = random.sample(range(nReal), nFake)
+    indices = random.sample(list(range(nReal)), nFake)
 
     # Replace the RA, DEC with a small shift
     fakeTab.add_column(Column(realTab[indices][raCol], name='RA_ori'))

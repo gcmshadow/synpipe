@@ -1,4 +1,7 @@
 from __future__ import print_function
+from builtins import zip
+from builtins import str
+from builtins import range
 import numpy as np
 
 import lsst.afw.image
@@ -51,8 +54,8 @@ class RandomGalSimFakesTask(BaseFakeSourcesTask):
         if self.config.nGal == 0:
             doGal = enumerate(self.galData)
         else:
-            inds = self.npRand.choice(range(len(self.galData)), size=self.config.nGal, replace=False)
-            doGal = zip(inds, self.galData[inds])
+            inds = self.npRand.choice(list(range(len(self.galData))), size=self.config.nGal, replace=False)
+            doGal = list(zip(inds, self.galData[inds]))
 
         for igal, gal in doGal:
             try:

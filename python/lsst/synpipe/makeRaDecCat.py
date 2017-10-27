@@ -8,6 +8,9 @@ The inputs can be:
    3. DataId for coadd image: (tract, patch, filter)
 """
 
+from builtins import map
+from builtins import zip
+from builtins import range
 import os
 import warnings
 
@@ -66,7 +69,7 @@ def getRandomRaDec(nRand, minRa, maxRa, minDec, maxDec, rad=None):
     if rad is None:
         raArr = uniform(low=minRa, high=maxRa, size=nRand)
         decArr = uniform(low=minDec, high=maxDec, size=nRand)
-        return zip(raArr, decArr)
+        return list(zip(raArr, decArr))
     else:
         import lsst.afw.coord as afwCoord
         import lsst.afw.geom as afwGeom
@@ -96,7 +99,7 @@ def getRandomRaDec(nRand, minRa, maxRa, minDec, maxDec, rad=None):
                 if sepGood:
                     raArr.append(raTry)
                     decArr.append(decTry)
-        return zip(raArr, decArr)
+        return list(zip(raArr, decArr))
 
 
 def plotRandomRaDec(randomRaDec, rangeRaDec=None):
@@ -105,7 +108,7 @@ def plotRandomRaDec(randomRaDec, rangeRaDec=None):
     """
     import matplotlib.pyplot as plt
 
-    plt.scatter(*zip(*randomRaDec))
+    plt.scatter(*list(zip(*randomRaDec)))
     plt.xlabel(r'RA (J2000)', fontsize=20, labelpad=20)
     plt.ylabel(r'DEC (J2000)', fontsize=20, labelpad=20)
 
@@ -140,13 +143,13 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
     """
 
     if dataId is not None:
-        if 'visit' in dataId.keys() and 'ccd' in dataId.keys():
+        if 'visit' in list(dataId.keys()) and 'ccd' in list(dataId.keys()):
             # Input should be a single frame image
             rangeRaDec = getImageRaDecRange(rootDir, dataId)
             randomRaDec = getRandomRaDec(nRand, rangeRaDec[0], rangeRaDec[1],
                                          rangeRaDec[2], rangeRaDec[3], rad=rad)
-        elif ('tract' in dataId.keys()
-              and 'patch' in dataId.keys()
+        elif ('tract' in list(dataId.keys())
+              and 'patch' in list(dataId.keys())
               and 'filter' in dataId.keys):
             # Input should be a coadd image
             rangeRaDec = getImageRaDecRange(rootDir, dataId,
@@ -184,23 +187,23 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
             from shapely.geometry import Point
             from shapely.prepared import prep
 
-            raArr, decArr = np.array(zip(*randomRaDec))
+            raArr, decArr = np.array(list(zip(*randomRaDec)))
             if os.path.isfile(acpMask):
                 acpRegs = polyReadWkb(acpMask)
                 acpPrep = prep(acpRegs)
-                inside = map(lambda x, y: acpPrep.contains(Point(x, y)),
-                             raArr, decArr)
+                inside = list(map(lambda x, y: acpPrep.contains(Point(x, y)),
+                             raArr, decArr))
             else:
                 inside = np.isfinite(raArr)
             if os.path.isfile(rejMask):
                 rejRegs = polyReadWkb(rejMask)
                 rejPrep = prep(rejRegs)
-                masked = map(lambda x, y: rejPrep.contains(Point(x, y)),
-                             raArr, decArr)
+                masked = list(map(lambda x, y: rejPrep.contains(Point(x, y)),
+                             raArr, decArr))
             else:
                 masked = np.isnan(raArr)
-            useful = map(lambda x, y: x and (not y), inside, masked)
-            randomUse = zip(raArr[useful], decArr[useful])
+            useful = list(map(lambda x, y: x and (not y), inside, masked))
+            randomUse = list(zip(raArr[useful], decArr[useful]))
         except ImportError:
             warnings.warn('Please install the Shapely')
             randomUse = randomRaDec
@@ -223,13 +226,13 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
             nGal = len(galCat)
 
             if nGal == nRand:
-                raArr, decArr = np.array(zip(*randomUse))
+                raArr, decArr = np.array(list(zip(*randomUse)))
                 raCol = astropy.table.Column(name='RA', data=raArr)
                 decCol = astropy.table.Column(name='Dec', data=decArr)
                 galCat.add_columns([raCol, decCol])
             elif nGal < nRand:
                 import random
-                raArr, decArr = np.array(zip(*random.sample(randomUse, nGal)))
+                raArr, decArr = np.array(list(zip(*random.sample(randomUse, nGal))))
                 raCol = astropy.table.Column(name='RA', data=raArr)
                 decCol = astropy.table.Column(name='Dec', data=decArr)
                 galCat.add_columns([raCol, decCol])
@@ -237,7 +240,7 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
                 import random
                 indGal = np.arange(nGal)
                 galCatRand = galCat[random.sample(indGal, nRand)]
-                raArr, decArr = np.array(zip(*randomUse))
+                raArr, decArr = np.array(list(zip(*randomUse)))
                 raCol = astropy.table.Column(name='RA', data=raArr)
                 decCol = astropy.table.Column(name='Dec', data=decArr)
                 galCatRand.add_columns([raCol, decCol])

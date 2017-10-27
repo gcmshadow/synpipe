@@ -8,6 +8,8 @@ Matches fakes based on position stored in the calibrated exposure image header
 from __future__ import division
 from __future__ import print_function
 
+from builtins import map
+from builtins import zip
 import re
 import argparse
 import collections
@@ -133,7 +135,7 @@ def getFakeMatchesHeader(cal_md, sources, tol=1.0):
     for card in cal_md.names():
         m = fakename.match(card)
         if m is not None:
-            x, y = map(float, (cal_md.get(card)).split(','))
+            x, y = list(map(float, (cal_md.get(card)).split(',')))
             fakeXY[int(m.group(1))] = (x, y)
 
     srcX, srcY = sources.getX(), sources.getY()
@@ -251,7 +253,7 @@ def getFakeSources(butler, dataId, tol=1.0,
                    'pixelScale': {'type': float,
                                   'doc': 'pixelscale in arcsec/pixel'}}
 
-    if not np.in1d(extraCols, availExtras.keys()).all():
+    if not np.in1d(extraCols, list(availExtras.keys())).all():
         print("extraCols must be in ", availExtras)
 
     try:
@@ -334,7 +336,7 @@ def getFakeSources(butler, dataId, tol=1.0,
 
     srcList = SourceCatalog(newSchema)
     srcList.reserve(sum([len(s) for s in srcIndex.values()]) +
-                    (0 if not includeMissing else srcIndex.values().count([])))
+                    (0 if not includeMissing else list(srcIndex.values()).count([])))
 
     centroidKey = sources.getCentroidKey()
     isPrimary = sources.schema.find('detect_isPrimary').getKey()
@@ -410,8 +412,8 @@ def getAstroTable(src, mags=True):
             icrscoord = lsst.afw.coord.coordLib.IcrsCoord
             if type(src[0].get(nameKey)) is quadrupole:
                 """Check for shape measurements"""
-                reff, q, theta = zip(*[getEllipse(s.get(nameKey))
-                                       for s in src])
+                reff, q, theta = list(zip(*[getEllipse(s.get(nameKey))
+                                       for s in src]))
                 tab.add_column(astropy.table.Column(name=name+'_a',
                                                     data=reff))
                 tab.add_column(astropy.table.Column(name=name+'_q',
@@ -420,9 +422,9 @@ def getAstroTable(src, mags=True):
                                                     data=theta))
             elif type(src[0].get(nameKey)) is icrscoord:
                 """Check for coordinate measurements"""
-                x, y = zip(*[(s.get(nameKey).getRa().asDegrees(),
+                x, y = list(zip(*[(s.get(nameKey).getRa().asDegrees(),
                               s.get(nameKey).getDec().asDegrees())
-                             for s in src])
+                             for s in src]))
                 tab.add_column(astropy.table.Column(name=name+'_ra', data=x))
                 tab.add_column(astropy.table.Column(name=name+'_dec', data=y))
             else:

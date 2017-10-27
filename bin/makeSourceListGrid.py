@@ -6,6 +6,9 @@ Author: Ryoma Murata : 2016-04-15.
 """
 from __future__ import print_function
 
+from builtins import zip
+from builtins import map
+from builtins import range
 import os
 import warnings
 
@@ -196,7 +199,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
         tractId = dataRef.dataId['tract']
         tract = skyMap[tractId]
         angle = self.config.theta_grid
-        ra_vert, dec_vert = zip(*tract.getVertexList())
+        ra_vert, dec_vert = list(zip(*tract.getVertexList()))
         ra_vert = sorted(ra_vert)
         dec_vert = sorted(dec_vert)
         ra0 = ra_vert[0].asDegrees()
@@ -229,9 +232,9 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                     acpPrep = prep(acpRegs)
                     acpWkb.close()
 
-                    inside = np.asarray(map(lambda x, y:
+                    inside = np.asarray(list(map(lambda x, y:
                                             acpPrep.contains(Point(x, y)),
-                                            raArr, decArr))
+                                            raArr, decArr)))
                 else:
                     inside = np.isfinite(raArr)
 
@@ -243,14 +246,14 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                     rejRegs = wkb.loads(rejWkb.read().decode('hex'))
                     rejPrep = prep(rejRegs)
                     rejWkb.close()
-                    masked = np.asarray(map(lambda x, y:
+                    masked = np.asarray(list(map(lambda x, y:
                                             rejPrep.contains(Point(x, y)),
-                                            raArr, decArr))
+                                            raArr, decArr)))
                 else:
                     masked = np.isnan(raArr)
 
-                useful = np.asarray(map(lambda x, y: x and (not y),
-                                        inside, masked))
+                useful = np.asarray(list(map(lambda x, y: x and (not y),
+                                        inside, masked)))
                 ra, dec = raArr[useful], decArr[useful]
 
                 print("## %d out of %d objects left" % (len(ra), len(raArr)))
@@ -278,7 +281,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
         outTab.add_column(astropy.table.Column(name="Dec", data=dec))
         if self.config.inputCat is not None:
             galData = astropy.table.Table().read(self.config.inputCat)
-            randInd = np.random.choice(range(len(galData)), size=nFakes)
+            randInd = np.random.choice(list(range(len(galData))), size=nFakes)
             mergedData = galData[randInd]
 
             for colname in mergedData.columns:

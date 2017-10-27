@@ -1,3 +1,4 @@
+from __future__ import print_function
 import lsst.afw.image
 import lsst.afw.geom
 import lsst.afw.math

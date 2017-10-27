@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import re
 import os
 import argparse
@@ -90,7 +91,7 @@ def main(root1, root2, tract, patch, filter, root=""):
     imgs = imgBefore, imgAfter, imgDiff
     titles = "Before", "After", "Diff"
     for i in range(3):
-        print '### Plot : ', i
+        print('### Plot : ', i)
         imin, imax = zscale(imgs[i], contrast=0.10, samples=500)
         axes[i].imshow(np.arcsinh(imgs[i]), interpolation="none",
                        vmin=imin, vmax=imax, cmap='gray')

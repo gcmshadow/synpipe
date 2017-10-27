@@ -2,6 +2,7 @@
 """
 function to show a list of src footprints in a mosaic
 """
+from __future__ import absolute_import
 
 import argparse
 
@@ -10,7 +11,7 @@ import lsst.daf.persistence
 import lsst.afw.display.ds9 as ds9
 import lsst.afw.display.utils
 
-import matchFakes
+from . import matchFakes
 
 import numpy.random
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import re
 import os
 import argparse
@@ -211,7 +212,7 @@ def main(root1, root2, visit, ccd, root=None, showMatch=False):
     imgs = imgBefore, imgAfter, imgDiff
     titles = "Before", "After", "Diff"
     for i in range(3):
-        print '### Plot : ', i
+        print('### Plot : ', i)
         axes[i].imshow(np.arcsinh(imgs[i]), cmap='gray')
         axes[i].set_title(titles[i])
         if showMatch:

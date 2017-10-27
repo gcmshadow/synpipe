@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from __future__ import print_function
 import os
 import argparse
 import itertools
@@ -30,9 +31,9 @@ def tractFindVisits(rerun, tract, filter='HSC-I', patch=None,
                            immediate=True)
         ccdInputs = coadd.getInfo().getCoaddInputs().ccds
         visits = np.unique(ccdInputs.get("visit"))
-        print "\n# Visits for Tract=%d Filter=%s Patch=%s\n" % (tract,
+        print("\n# Visits for Tract=%d Filter=%s Patch=%s\n" % (tract,
                                                                 filter,
-                                                                patch)
+                                                                patch))
     else:
         """
         Go through all the possible patches
@@ -64,14 +65,14 @@ def tractFindVisits(rerun, tract, filter='HSC-I', patch=None,
             vTemp = np.unique(ccdInputs.get("visit"))
             visits = np.unique(np.append(visits, vTemp))
 
-        print "\n# Input visits for Tract=%d Filter=%s\n" % (tract, filter)
+        print("\n# Input visits for Tract=%d Filter=%s\n" % (tract, filter))
 
     line = ''
-    print " # Input CCDs includes %d Visits\n" % len(visits)
+    print(" # Input CCDs includes %d Visits\n" % len(visits))
     for vv in visits:
         line = line + str(vv) + '^'
 
-    print line[:-1] + '\n'
+    print(line[:-1] + '\n')
 
     return visits
 

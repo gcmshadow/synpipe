@@ -2,6 +2,7 @@
 """
 Compare the input fake galaxy model to the output one
 """
+from __future__ import absolute_import
 import argparse
 
 import numpy as np
@@ -13,7 +14,7 @@ import lsst.afw.table
 import lsst.afw.geom.ellipses
 import lsst.daf.persistence as dafPersist
 
-from matchFakes import getFakeSources
+from .matchFakes import getFakeSources
 
 
 def getParams(record, galType='sersic'):

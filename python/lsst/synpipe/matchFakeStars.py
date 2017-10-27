@@ -3,6 +3,7 @@
 matchFakes.py
 matches fakes based on position stored in the calibrated exposure image header
 """
+from __future__ import print_function
 
 import lsst.daf.persistence as dafPersist
 from lsst.afw.table.tableLib import SourceCatalog
@@ -88,10 +89,10 @@ def main():
 
     nInject = len(fakeXY)
     nMatch = len(np.argwhere(starPsfMag))
-    print "# Number of Injected Stars : %d" % nInject
-    print "# Number of Matched  Stars : %d" % nMatch
-    print "# Visit = %d   CCD = %d" % (args.visit, args.ccd)
-    print "# FakeX  FakeY  PSFMag  PSFMagErr  Deblend "
+    print("# Number of Injected Stars : %d" % nInject)
+    print("# Number of Matched  Stars : %d" % nMatch)
+    print("# Visit = %d   CCD = %d" % (args.visit, args.ccd))
+    print("# FakeX  FakeY  PSFMag  PSFMagErr  Deblend ")
 
     for i in range(nInject):
         #print starIndex[i][0], starList[i]['flux.psf']
@@ -104,8 +105,8 @@ def main():
 
         injectXY = fakeXY[i]
 
-        print "%6.1d   %6.1d   %7.3f  %6.3f  %s" % (injectXY[0], injectXY[1],
-                                                    starPsfMag[i], starPsfMerr[i], deblend)
+        print("%6.1d   %6.1d   %7.3f  %6.3f  %s" % (injectXY[0], injectXY[1],
+                                                    starPsfMag[i], starPsfMerr[i], deblend))
 
 
 if __name__ == '__main__':

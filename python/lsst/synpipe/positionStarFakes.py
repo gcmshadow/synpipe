@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from __future__ import print_function
+from __future__ import absolute_import
 import numpy as np
 
 import pyfits as fits
@@ -13,7 +15,7 @@ import lsst.pex.config as afwConfig
 
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 
-import FakeSourceLib as fsl
+from . import FakeSourceLib as fsl
 
 
 class PositionStarFakesConfig(BaseFakeSourcesConfig):
@@ -63,7 +65,7 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
                 starCoord = afwCoord.Coord(afwGeom.Point2D(star['RA'],
                                                            star['DEC']))
             except KeyError:
-                raise("No RA/DEC column in %s table" % self.config.starList)
+                raise KeyError("No RA/DEC column in table".format(self.config.starList))
 
             starXY = wcs.skyToPixel(starCoord)
             bboxI = exposure.getBBox(PARENT)

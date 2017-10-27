@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
+from __future__ import print_function
+from __future__ import absolute_import
 import os
 import fcntl
 
@@ -16,8 +18,8 @@ import lsst.pex.config as lsstConfig
 
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 
-import FakeSourceLib as fsl
-import makeFakeGalaxy as makeFake
+from . import FakeSourceLib as fsl
+from . import makeFakeGalaxy as makeFake
 
 
 class PositionGalSimFakesConfig(BaseFakeSourcesConfig):
@@ -100,7 +102,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
                 coordAdd = lsst.afw.geom.Point2D(gal['RA'], gal['DEC'])
                 galCoord = lsst.afw.coord.Coord(coordAdd)
             except KeyError:
-                raise("No RA/DEC column in %s table" % self.config.galList)
+                raise KeyError("No RA/DEC column in {} table".format(self.config.galList))
 
             galXY = wcs.skyToPixel(galCoord)
             bboxI = exposure.getBBox(PARENT)

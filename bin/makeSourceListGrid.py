@@ -4,6 +4,7 @@
 Generate grid of RA, DEC for fake objects.
 Author: Ryoma Murata : 2016-04-15.
 """
+from __future__ import print_function
 
 import os
 import warnings
@@ -222,7 +223,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                 # Filter through the accept mask
                 acpUse = self.config.acpMask
                 if (acpUse != '') and os.path.isfile(acpUse):
-                    print "## Filter through : %s" % acpUse
+                    print("## Filter through : %s" % acpUse)
                     acpWkb = open(acpUse, 'r')
                     acpRegs = wkb.loads(acpWkb.read().decode('hex'))
                     acpPrep = prep(acpRegs)
@@ -237,7 +238,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                 # Filter through the reject mask
                 rejUse = self.config.rejMask
                 if (rejUse != '') and os.path.isfile(rejUse):
-                    print "## Filter through : %s" % rejUse
+                    print("## Filter through : %s" % rejUse)
                     rejWkb = open(rejUse, 'r')
                     rejRegs = wkb.loads(rejWkb.read().decode('hex'))
                     rejPrep = prep(rejRegs)
@@ -252,7 +253,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                                         inside, masked))
                 ra, dec = raArr[useful], decArr[useful]
 
-                print "## %d out of %d objects left" % (len(ra), len(raArr))
+                print("## %d out of %d objects left" % (len(ra), len(raArr)))
 
                 # Keep a log of the deleted ra, dec
                 ra_deleted = raArr[np.invert(useful)],
@@ -287,7 +288,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
 
             # Replace ID with a unique integer (using index)
             if ('ID' in outTab.colnames) and (self.config.uniqueID):
-                print "## Rename the ID column"
+                print("## Rename the ID column")
                 outTab.rename_column('ID', 'modelID')
                 outTab.add_column(astropy.table.Column(name="ID",
                                                        data=np.arange(len(outTab))))
@@ -298,7 +299,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
             # Generate multiBand catalog at the same time
             magList = [col for col in galData.colnames if 'mag_' in col]
             if len(magList) >= 1:
-                print "Find magnitude in %d band(s)" % len(magList)
+                print("Find magnitude in %d band(s)" % len(magList))
                 for mag in magList:
                     try:
                         outTab.remove_column('mag')

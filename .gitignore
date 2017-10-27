@@ -110,3 +110,4 @@ python/lsst/synpipe/version.py
 tests/.tests
 tests/.cache
 ups/*.cfgc
+bin/*

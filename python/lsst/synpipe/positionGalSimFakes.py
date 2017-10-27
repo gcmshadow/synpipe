@@ -233,7 +233,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
                             continue
                     continue
                 self.log.info("Cropping FAKE%d from %s to %s" % (galident,
-                              str(galBBox), str(newBBox)))
+                                                                 str(galBBox), str(newBBox)))
                 galImage = galImage.Factory(galImage, newBBox,
                                             PARENT)
                 galBBox = newBBox

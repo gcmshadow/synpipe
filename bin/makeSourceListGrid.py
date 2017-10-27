@@ -159,7 +159,7 @@ class MakeFakeInputsConfig(pexConfig.Config):
         doc="Type of data to use",
         default="deep",
         allowed={"deep": "deepCoadd"}
-        )
+    )
 
     inputCat = pexConfig.Field(
         doc="input galaxy catalog, if none just return ra/dec list",
@@ -230,7 +230,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
 
                     inside = np.asarray(map(lambda x, y:
                                             acpPrep.contains(Point(x, y)),
-                                        raArr, decArr))
+                                            raArr, decArr))
                 else:
                     inside = np.isfinite(raArr)
 
@@ -244,12 +244,12 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                     rejWkb.close()
                     masked = np.asarray(map(lambda x, y:
                                             rejPrep.contains(Point(x, y)),
-                                        raArr, decArr))
+                                            raArr, decArr))
                 else:
                     masked = np.isnan(raArr)
 
                 useful = np.asarray(map(lambda x, y: x and (not y),
-                                    inside, masked))
+                                        inside, masked))
                 ra, dec = raArr[useful], decArr[useful]
 
                 print "## %d out of %d objects left" % (len(ra), len(raArr))
@@ -290,10 +290,10 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                 print "## Rename the ID column"
                 outTab.rename_column('ID', 'modelID')
                 outTab.add_column(astropy.table.Column(name="ID",
-                                  data=np.arange(len(outTab))))
+                                                       data=np.arange(len(outTab))))
             elif ('ID' not in outTab.colnames):
                 outTab.add_column(astropy.table.Column(name="ID",
-                                  data=np.arange(len(outTab))))
+                                                       data=np.arange(len(outTab))))
 
             # Generate multiBand catalog at the same time
             magList = [col for col in galData.colnames if 'mag_' in col]
@@ -305,7 +305,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                     except KeyError:
                         pass
                     outTab.add_column(astropy.table.Column(name='mag',
-                                      data=mergedData[mag]))
+                                                           data=mergedData[mag]))
                     filt = mag.split('_')[1].upper()
                     outFits = 'src_%d_radec_grid_%0.1fasec_%s.fits' % (tractId,
                                                                        angle,
@@ -342,6 +342,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
 
     def _getMetadataName(self):
         return None
+
 
 if __name__ == '__main__':
     MakeFakeInputsTask.parseAndRun()

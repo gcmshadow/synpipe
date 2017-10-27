@@ -7,6 +7,7 @@ from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 import lsst.synpipe.FakeSourceLib as fsl
 import numpy as np
 
+
 class RandomStarFakeSourcesConfig(BaseFakeSourcesConfig):
     nStars = lsst.pex.config.Field(dtype=int, default=1,
                                    doc="Number of stars to add")
@@ -45,7 +46,7 @@ class RandomStarFakeSourcesTask(BaseFakeSourcesTask):
             x = self.rng.flat(bboxD.getMinX(), bboxD.getMaxX())
             y = self.rng.flat(bboxD.getMinY(), bboxD.getMaxY())
             md.set("FAKE%d" % i, "%.3f, %.3f" % (x, y))
-            self.log.info("Adding fake at: %.1f,%.1f"% (x, y))
+            self.log.info("Adding fake at: %.1f,%.1f" % (x, y))
             psfImage = psf.computeImage(lsst.afw.geom.Point2D(x, y))
             psfImage *= flux
             psfMaskedImage = fsl.addNoise(psfImage.convertF(), exposure.getDetector(), rand_gen=self.npRand)

@@ -14,9 +14,11 @@ import lsst.afw.detection as afwDetect
 #See https://dev.lsstcorp.org/trac/ticket/2282 for more details
 #I think you need something like cmdLineTask.applyOverrides to deal with this
 
+
 class OnlyFakesDetectionConfig(measAlg.SourceDetectionTask.ConfigClass):
     dummyVar = pexConfig.Field(doc='Dummy config variable, does nothing',
                                dtype=bool, default=True)
+
 
 class OnlyFakesDetectionTask(measAlg.SourceDetectionTask):
     """This task serves culls the source list to sources which overlap with fakes"""
@@ -48,7 +50,7 @@ class OnlyFakesDetectionTask(measAlg.SourceDetectionTask):
         for r in removes:
             del fpPos[r]
 
-        self.log.info("Found %d sources near fake footprints"% len(fpPos))
+        self.log.info("Found %d sources near fake footprints" % len(fpPos))
 
         fpSets.numPos = len(fpPos)
         if fpSets.negative:
@@ -62,4 +64,3 @@ class OnlyFakesDetectionTask(measAlg.SourceDetectionTask):
             fpSets.positive.makeSources(sources)
 
         return pipeBase.Struct(sources=sources, fpSets=fpSets)
-

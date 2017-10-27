@@ -46,28 +46,28 @@ def writeNumpyTable(fakeTable):
     """Writes output to numpy
     """
     npTable = np.recarray(len(fakeTable),
-                          dtype={'names':['id', 'fakeid', 'visit', 'ccd',
-                                          'cmodelMag', 'expMag',
-                                          'devMag',
-                                          'expReff', 'devReff',
-                                          'expBA', 'devBA',
-                                          'expPosAng', 'devPosAng',
-                                          'cmodelMagErr', 'expMagErr',
-                                          'devMagErr', 'nchild', 'parent'],
-                                 'formats':[long, int, int, int,
-                                            float, float,
-                                            float, float, float, float,
-                                            float, float, float, float,
-                                            float, float, int, long]})
+                          dtype={'names': ['id', 'fakeid', 'visit', 'ccd',
+                                           'cmodelMag', 'expMag',
+                                           'devMag',
+                                           'expReff', 'devReff',
+                                           'expBA', 'devBA',
+                                           'expPosAng', 'devPosAng',
+                                           'cmodelMagErr', 'expMagErr',
+                                           'devMagErr', 'nchild', 'parent'],
+                                 'formats': [long, int, int, int,
+                                             float, float,
+                                             float, float, float, float,
+                                             float, float, float, float,
+                                             float, float, int, long]})
     for indFake, fake in enumerate(fakeTable):
         npTable[indFake]['id'] = fake.get('id')
         npTable[indFake]['fakeid'] = fake.get('fakeId')
         npTable[indFake]['ccd'] = fake.get('ccd')
         npTable[indFake]['visit'] = fake.get('visit')
-        nameMatch = {'sersic':'cmodel',
-                     'exp':'cmodel.exp',
-                     'cmodel':'cmodel',
-                     'dev':'cmodel.dev'}
+        nameMatch = {'sersic': 'cmodel',
+                     'exp': 'cmodel.exp',
+                     'cmodel': 'cmodel',
+                     'dev': 'cmodel.dev'}
         for name in ('cmodel', 'exp', 'dev'):
             m1, m2 = getMag(fake, nameMatch[name]+'.flux')
             npTable[indFake][name+'Mag'] = m1
@@ -89,7 +89,7 @@ def main(root, visit, ccds, galType='sersic', output='outputs/'):
     butler = dafPersist.Butler(root)
     fakeTable = None
     for ccd in ccds:
-        dataId = {'visit':visit, 'ccd':ccd}
+        dataId = {'visit': visit, 'ccd': ccd}
         try:
             temp = getFakeSources(butler, dataId, tol=1.0,
                                   visit=True, ccd=True)
@@ -102,8 +102,8 @@ def main(root, visit, ccds, galType='sersic', output='outputs/'):
 
     npTable = writeNumpyTable(fakeTable)
     rerunName = root.split('/')[-2]
-    fitsTable = astropy.table.Table(npTable).write(output+'/'+rerunName+
-                                             '_galMags.txt', format='ascii')
+    fitsTable = astropy.table.Table(npTable).write(output+'/'+rerunName +
+                                                   '_galMags.txt', format='ascii')
 
 
 if __name__ == '__main__':

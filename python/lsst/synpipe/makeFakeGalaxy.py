@@ -256,7 +256,6 @@ def galSimAdd(galObjList, size=0, scale=1.0, method="no_pixel",
 
 def plotFakeGalaxy(galObj, galID=None, suffix=None,
                    size=0, addPoisson=False):
-
     """
     Generate a PNG image of the model
     By default, the image will be named as 'fake_galaxy.png'

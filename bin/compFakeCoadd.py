@@ -15,6 +15,7 @@ from lsst.afw.table import SourceCatalog, SchemaMapper
 
 from distutils.version import StrictVersion
 
+
 def zscale(img, contrast=0.25, samples=500):
 
     # Image scaling function form http://hsca.ipmu.jp/hscsphinx/scripts/psfMosaic.html
@@ -43,7 +44,7 @@ def getExpArray(root, tract, patch, filter):
 
     # make a butler and specify your dataId
     butler = dafPersist.Butler(root)
-    dataId = {'tract': tract, 'patch':patch, 'filter':filter}
+    dataId = {'tract': tract, 'patch': patch, 'filter': filter}
 
     pipeVersion = dafPersist.eupsVersions.EupsVersions().versions['hscPipe']
     if StrictVersion(pipeVersion) >= StrictVersion('3.9.0'):
@@ -76,23 +77,23 @@ def main(root1, root2, tract, patch, filter, root=""):
 
     # get the image array before the fake objects are added
     imgBefore = getExpArray(root1, tract, patch, filter)
-    imgAfter  = getExpArray(root2, tract, patch, filter)
+    imgAfter = getExpArray(root2, tract, patch, filter)
 
     # get the difference between the two image
     imgDiff = (imgAfter - imgBefore)
 
     # stretch it with arcsinh and make a png with pyplot
-    fig, axes = pyplot.subplots(1, 3, sharex=True, sharey=True, figsize=(16.5,5))
+    fig, axes = pyplot.subplots(1, 3, sharex=True, sharey=True, figsize=(16.5, 5))
     pyplot.subplots_adjust(left=0.04, bottom=0.04, right=0.99, top=0.95,
-                           wspace=0.01, hspace = 0.01)
+                           wspace=0.01, hspace=0.01)
 
-    imgs   = imgBefore, imgAfter, imgDiff
+    imgs = imgBefore, imgAfter, imgDiff
     titles = "Before", "After", "Diff"
     for i in range(3):
         print '### Plot : ', i
         imin, imax = zscale(imgs[i], contrast=0.10, samples=500)
         axes[i].imshow(np.arcsinh(imgs[i]), interpolation="none",
-                vmin=imin, vmax=imax, cmap='gray')
+                       vmin=imin, vmax=imax, cmap='gray')
         axes[i].set_title(titles[i])
 
     pyplot.gcf().savefig("%s-%s-%s-%s.png"%(rerun, str(tract), str(patch), str(filter)))

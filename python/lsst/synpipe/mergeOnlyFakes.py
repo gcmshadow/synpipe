@@ -1,11 +1,11 @@
 import copy
 import random
-import lsst.pex.config      as pexConfig
-import lsst.pipe.base       as pipeBase
-import lsst.afw.table       as afwTable
-import lsst.afw.image       as afwImage
+import lsst.pex.config as pexConfig
+import lsst.pipe.base as pipeBase
+import lsst.afw.table as afwTable
+import lsst.afw.image as afwImage
 import lsst.meas.algorithms as measAlg
-import lsst.afw.detection   as afwDetect
+import lsst.afw.detection as afwDetect
 import lsst.pipe.tasks.multiBand as mBand
 
 from lsst.pipe.tasks.coaddBase import getSkyInfo
@@ -20,9 +20,11 @@ from lsst.pipe.tasks.coaddBase import getSkyInfo
 
 # Song Huang
 
+
 class OnlyFakesMergeConfig(mBand.MeasureMergedCoaddSourcesTask.ConfigClass):
     dummyVar = pexConfig.Field(doc='Dummy config variable, does nothing',
                                dtype=bool, default=True)
+
 
 class OnlyFakesMergeTask(mBand.MeasureMergedCoaddSourcesTask):
     """This task serves culls the source list to sources which overlap with fakes"""
@@ -41,7 +43,7 @@ class OnlyFakesMergeTask(mBand.MeasureMergedCoaddSourcesTask):
         fakebit = mask.getPlaneBitMask('FAKE')
 
         sources = self.readSources(patchRef)
-        self.log.info("Found %d sources"% len(sources))
+        self.log.info("Found %d sources" % len(sources))
         """ignore objects whose footprints do NOT overlap with the 'FAKE' mask"""
         removes = []
         for i_ss, ss in enumerate(sources):
@@ -53,7 +55,7 @@ class OnlyFakesMergeTask(mBand.MeasureMergedCoaddSourcesTask):
         removes = sorted(removes, reverse=True)
         for r in removes:
             del sources[r]
-        self.log.info("Found %d sources near fake footprints"% len(sources))
+        self.log.info("Found %d sources near fake footprints" % len(sources))
 
         if self.config.doDeblend:
             self.deblend.run(exposure, sources, exposure.getPsf())

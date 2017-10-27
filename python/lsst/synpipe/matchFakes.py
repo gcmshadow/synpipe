@@ -412,11 +412,11 @@ def getAstroTable(src, mags=True):
                 reff, q, theta = zip(*[getEllipse(s.get(nameKey))
                                        for s in src])
                 tab.add_column(astropy.table.Column(name=name+'_a',
-                               data=reff))
+                                                    data=reff))
                 tab.add_column(astropy.table.Column(name=name+'_q',
-                               data=q))
+                                                    data=q))
                 tab.add_column(astropy.table.Column(name=name+'_theta',
-                               data=theta))
+                                                    data=theta))
             elif type(src[0].get(nameKey)) is icrscoord:
                 """Check for coordinate measurements"""
                 x, y = zip(*[(s.get(nameKey).getRa().asDegrees(),
@@ -467,41 +467,41 @@ def returnMatchSingle(butler, slist, visit, ccd,
                       fakeCat=None, pixMatch=False, multiband=False,
                       reffMatch=False, includeMissing=True, minRad=None,
                       raCol='RA', decCol='Dec'):
-        """Return matched catalog for each CCD or Patch."""
-        if filt is None:
-            print('Doing ccd %d' % int(ccd))
-            mlis = getFakeSources(butler,
-                                  {'visit': visit, 'ccd': int(ccd)},
-                                  includeMissing=includeMissing,
-                                  extraCols=('visit', 'ccd',
-                                             'zeropoint', 'pixelScale',
-                                             'thetaNorth'),
-                                  radecMatch=fakeCat if not pixMatch else None,
-                                  tol=tol, reffMatch=reffMatch, pix=pix,
-                                  minRad=minRad, raCol=raCol, decCol=decCol)
-        else:
-            print('Doing patch %s' % ccd)
-            mlis = getFakeSources(butler,
-                                  {'tract': visit, 'patch': ccd,
-                                   'filter': filt},
-                                  includeMissing=includeMissing,
-                                  extraCols=('thetaNorth', 'pixelScale',
-                                             'zeropoint'),
-                                  radecMatch=fakeCat if not pixMatch else None,
-                                  tol=tol, multiband=multiband,
-                                  reffMatch=reffMatch, pix=pix,
-                                  minRad=minRad, raCol=raCol, decCol=decCol)
+    """Return matched catalog for each CCD or Patch."""
+    if filt is None:
+        print('Doing ccd %d' % int(ccd))
+        mlis = getFakeSources(butler,
+                              {'visit': visit, 'ccd': int(ccd)},
+                              includeMissing=includeMissing,
+                              extraCols=('visit', 'ccd',
+                                         'zeropoint', 'pixelScale',
+                                         'thetaNorth'),
+                              radecMatch=fakeCat if not pixMatch else None,
+                              tol=tol, reffMatch=reffMatch, pix=pix,
+                              minRad=minRad, raCol=raCol, decCol=decCol)
+    else:
+        print('Doing patch %s' % ccd)
+        mlis = getFakeSources(butler,
+                              {'tract': visit, 'patch': ccd,
+                               'filter': filt},
+                              includeMissing=includeMissing,
+                              extraCols=('thetaNorth', 'pixelScale',
+                                         'zeropoint'),
+                              radecMatch=fakeCat if not pixMatch else None,
+                              tol=tol, multiband=multiband,
+                              reffMatch=reffMatch, pix=pix,
+                              minRad=minRad, raCol=raCol, decCol=decCol)
 
-        if mlis is None:
-            print('   No match returns!')
+    if mlis is None:
+        print('   No match returns!')
+    else:
+        if slist is None:
+            slist = mlis.copy(True)
         else:
-            if slist is None:
-                slist = mlis.copy(True)
-            else:
-                slist.extend(mlis, True)
-            del mlis
+            slist.extend(mlis, True)
+        del mlis
 
-        return slist
+    return slist
 
 
 def returnMatchTable(rootDir, visit, ccdList, outfile=None, fakeCat=None,

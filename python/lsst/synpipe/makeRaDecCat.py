@@ -64,7 +64,7 @@ def getRandomRaDec(nRand, minRa, maxRa, minDec, maxDec, rad=None):
         raise Exception('Please provide appropriate Ra,Dec range !')
 
     if rad is None:
-        raArr = uniform(low=minRa,  high=maxRa,  size=nRand)
+        raArr = uniform(low=minRa, high=maxRa, size=nRand)
         decArr = uniform(low=minDec, high=maxDec, size=nRand)
         return zip(raArr, decArr)
     else:
@@ -77,11 +77,11 @@ def getRandomRaDec(nRand, minRa, maxRa, minDec, maxDec, rad=None):
         numTry = 0
         while len(raArr) < nRand:
             if numTry == 0:
-                raArr.append(uniform(low=minRa,   high=maxRa))
+                raArr.append(uniform(low=minRa, high=maxRa))
                 decArr.append(uniform(low=minDec, high=maxDec))
                 numTry += 1
             else:
-                raTry = uniform(low=minRa,  high=maxRa)
+                raTry = uniform(low=minRa, high=maxRa)
                 decTry = uniform(low=minDec, high=maxDec)
                 coordTry = afwCoord.Coord(afwGeom.Point2D(raTry, decTry))
                 nExist = len(raArr)
@@ -106,7 +106,7 @@ def plotRandomRaDec(randomRaDec, rangeRaDec=None):
     import matplotlib.pyplot as plt
 
     plt.scatter(*zip(*randomRaDec))
-    plt.xlabel(r'RA (J2000)',  fontsize=20, labelpad=20)
+    plt.xlabel(r'RA (J2000)', fontsize=20, labelpad=20)
     plt.ylabel(r'DEC (J2000)', fontsize=20, labelpad=20)
 
     # TODO : To be finished
@@ -224,13 +224,13 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
 
             if nGal == nRand:
                 raArr, decArr = np.array(zip(*randomUse))
-                raCol = astropy.table.Column(name='RA',  data=raArr)
+                raCol = astropy.table.Column(name='RA', data=raArr)
                 decCol = astropy.table.Column(name='Dec', data=decArr)
                 galCat.add_columns([raCol, decCol])
             elif nGal < nRand:
                 import random
                 raArr, decArr = np.array(zip(*random.sample(randomUse, nGal)))
-                raCol = astropy.table.Column(name='RA',  data=raArr)
+                raCol = astropy.table.Column(name='RA', data=raArr)
                 decCol = astropy.table.Column(name='Dec', data=decArr)
                 galCat.add_columns([raCol, decCol])
             else:
@@ -238,7 +238,7 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
                 indGal = np.arange(nGal)
                 galCatRand = galCat[random.sample(indGal, nRand)]
                 raArr, decArr = np.array(zip(*randomUse))
-                raCol = astropy.table.Column(name='RA',  data=raArr)
+                raCol = astropy.table.Column(name='RA', data=raArr)
                 decCol = astropy.table.Column(name='Dec', data=decArr)
                 galCatRand.add_columns([raCol, decCol])
                 galCat = galCatRand

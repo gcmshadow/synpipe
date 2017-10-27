@@ -11,13 +11,14 @@ import argparse
 import re
 import collections
 
+
 def getFakeSources(rootdir, dataId, tol=0.1):
     """Get list of sources which agree in position with fake ones with tol
     """
     butler = dafPersist.Butler(rootdir)
 
     sources = butler.get('src', dataId)
-    cal_md  = butler.get('calexp_md', dataId)
+    cal_md = butler.get('calexp_md', dataId)
 
     # Get the X, Y locations of objects on the CCD
     srcX, srcY = sources.getX(), sources.getY()
@@ -26,31 +27,31 @@ def getFakeSources(rootdir, dataId, tol=0.1):
     # Get the PSF flux and its error
     flux, ferr = sources.getPsfFlux(), sources.getPsfFluxErr()
     # Convert them into magnitude and its error
-    mag,  merr = 2.5*np.log10(flux), 2.5/np.log(10)*(ferr/flux)
+    mag, merr = 2.5*np.log10(flux), 2.5/np.log(10)*(ferr/flux)
     mag = zeropoint - mag
 
     # X, Y locations of the fake stars
-    fakeXY   = collections.defaultdict(tuple)
+    fakeXY = collections.defaultdict(tuple)
     # Regular Expression
     fakename = re.compile('FAKE([0-9]+)')
     for card in cal_md.names():
         m = fakename.match(card)
         if m is not None:
-            x,y = map(float, (cal_md.get(card)).split(','))
-            fakeXY[int(m.group(1))] = (x,y)
+            x, y = map(float, (cal_md.get(card)).split(','))
+            fakeXY[int(m.group(1))] = (x, y)
 
     srcIndex = collections.defaultdict(list)
-    for fid, fcoord  in fakeXY.items():
+    for fid, fcoord in fakeXY.items():
         matched = ((np.abs(srcX-fcoord[0]) < tol) &
                    (np.abs(srcY-fcoord[1]) < tol))
         s1 = sources.subset(matched)
         srcIndex[fid] = np.where(matched)[0]
 
     #srcList    = None
-    srcPsfMag  = []
+    srcPsfMag = []
     srcPsfMerr = []
-    matchX     = []
-    matchY     = []
+    matchX = []
+    matchY = []
     for s in srcIndex.values():
         #for ss in s:
         #if srcList is None:
@@ -83,29 +84,29 @@ def main():
 
     #(starIndex,starList) = getFakeSources(args.rootDir, {'visit':args.visit, 'ccd':args.ccd})
     (starIndex, fakeXY, matchX, matchY, starPsfMag, starPsfMerr) = getFakeSources(args.rootDir,
-                                                                                  {'visit':args.visit, 'ccd':args.ccd})
+                                                                                  {'visit': args.visit, 'ccd': args.ccd})
 
     nInject = len(fakeXY)
-    nMatch  = len(np.argwhere(starPsfMag))
+    nMatch = len(np.argwhere(starPsfMag))
     print "# Number of Injected Stars : %d" % nInject
     print "# Number of Matched  Stars : %d" % nMatch
     print "# Visit = %d   CCD = %d" % (args.visit, args.ccd)
     print "# FakeX  FakeY  PSFMag  PSFMagErr  Deblend "
 
     for i in range(nInject):
-       #print starIndex[i][0], starList[i]['flux.psf']
-       if len(starIndex[i]) > 1:
-           deblend = "blended"
-       elif starPsfMag[i] > 0:
-           deblend = "isolate"
-       else:
-           deblend = "nomatch"
+        #print starIndex[i][0], starList[i]['flux.psf']
+        if len(starIndex[i]) > 1:
+            deblend = "blended"
+        elif starPsfMag[i] > 0:
+            deblend = "isolate"
+        else:
+            deblend = "nomatch"
 
-       injectXY = fakeXY[i]
+        injectXY = fakeXY[i]
 
-       print "%6.1d   %6.1d   %7.3f  %6.3f  %s" % (injectXY[0], injectXY[1],
-                                            starPsfMag[i], starPsfMerr[i], deblend)
+        print "%6.1d   %6.1d   %7.3f  %6.3f  %s" % (injectXY[0], injectXY[1],
+                                                    starPsfMag[i], starPsfMerr[i], deblend)
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main()

@@ -83,7 +83,7 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
                     self.log.info("Skipping fake %d" % starident)
                     continue
                 self.log.info("Cropping FAKE%d from %s to %s" % (starident,
-                              str(starBBox), str(newBBox)))
+                                                                 str(starBBox), str(newBBox)))
                 starImage = starImage.Factory(starImage, newBBox, PARENT)
                 starBBox = newBBox
 

@@ -1,6 +1,0 @@
-import lsst.synpipe.positionGalSimFakes
-
-root.fakes.retarget(fakes.positionGalSimFakes.PositionGalSimFakesTask)
-root.fakes.galList = 'galaxy_test_pos.fits'
-root.fakes.galType = 'sersic'
-root.display = True

@@ -32,54 +32,51 @@ def combineWithForce(meas, force):
     mapper.addMinimalSchema(meas.schema)
     newSchema = mapper.getOutputSchema()
     # Add new fields
-    newSchema.addField('force.deblend.nchild', type=int)
-    newSchema.addField('force.classification.extendedness', type=float)
-    newSchema.addField('force.flux.kron', type=float)
-    newSchema.addField('force.flux.kron.err', type=float)
-    newSchema.addField('force.flux.psf', type=float)
-    newSchema.addField('force.flux.psf.err', type=float)
-    newSchema.addField('force.flux.kron.apcorr', type=float)
-    newSchema.addField('force.flux.kron.apcorr.err', type=float)
-    newSchema.addField('force.flux.psf.apcorr', type=float)
-    newSchema.addField('force.flux.psf.apcorr.err', type=float)
-    newSchema.addField('force.cmodel.flux', type=float)
-    newSchema.addField('force.cmodel.flux.err', type=float)
-    newSchema.addField('force.cmodel.fracDev', type=float)
-    newSchema.addField('force.cmodel.exp.flux', type=float)
-    newSchema.addField('force.cmodel.exp.flux.err', type=float)
-    newSchema.addField('force.cmodel.dev.flux', type=float)
-    newSchema.addField('force.cmodel.dev.flux.err', type=float)
-    newSchema.addField('force.cmodel.flux.apcorr', type=float)
-    newSchema.addField('force.cmodel.flux.apcorr.err', type=float)
-    newSchema.addField('force.cmodel.exp.flux.apcorr', type=float)
-    newSchema.addField('force.cmodel.exp.flux.apcorr.err', type=float)
-    newSchema.addField('force.cmodel.dev.flux.apcorr', type=float)
-    newSchema.addField('force.cmodel.dev.flux.apcorr.err', type=float)
+    newSchema.addField('force_deblend_nChild', type=np.int32)
+    newSchema.addField('force_base_ClassificationExtendedness_value', type=float)
+    newSchema.addField('force_ext_photometryKron_KronFlux_flux', type=float)
+    newSchema.addField('force_ext_photometryKron_KronFlux_fluxSigma', type=float)
+    newSchema.addField('force_base_PsfFlux_flux', type=float)
+    newSchema.addField('force_base_PsfFlux_fluxSigma', type=float)
+    newSchema.addField('force_ext_photometryKron_KronFlux_apCorr', type=float)
+    newSchema.addField('force_ext_photometryKron_KronFlux_apCorrSigma', type=float)
+    newSchema.addField('force_base_PsfFlux_apCorr', type=float)
+    newSchema.addField('force_base_PsfFlux_apCorrSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_flux', type=float)
+    newSchema.addField('force_modelfit_CModel_fluxSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_fracDev', type=float)
+    newSchema.addField('force_modelfit_CModel_exp_flux', type=float)
+    newSchema.addField('force_modelfit_CModel_exp_fluxSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_dev_flux', type=float)
+    newSchema.addField('force_modelfit_CModel_dev_fluxSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_apCorr', type=float)
+    newSchema.addField('force_modelfit_CModel_apCorrSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_exp_apCorr', type=float)
+    newSchema.addField('force_modelfit_CModel_exp_apCorrSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_dev_apCorr', type=float)
+    newSchema.addField('force_modelfit_CModel_dev_apCorrSigma', type=float)
 
-    newCols = ['deblend.nchild', 'classification.extendedness',
-               'flux.kron', 'flux.kron.err',
-               'flux.psf', 'flux.psf.err',
-               'flux.kron.apcorr', 'flux.kron.apcorr.err',
-               'flux.psf.apcorr', 'flux.psf.apcorr.err',
-               'cmodel.flux', 'cmodel.flux.err',
-               'cmodel.flux', 'cmodel.flux.err',
-               'cmodel.flux.apcorr', 'cmodel.flux.apcorr.err',
-               'cmodel.exp.flux', 'cmodel.exp.flux.err',
-               'cmodel.exp.flux.apcorr', 'cmodel.exp.flux.apcorr.err',
-               'cmodel.dev.flux', 'cmodel.dev.flux.err',
-               'cmodel.dev.flux.apcorr', 'cmodel.dev.flux.apcorr.err',
-               'cmodel.fracDev']
+    newCols = ['deblend_nChild', 'base_ClassificationExtendedness_value',
+               'ext_photometryKron_KronFlux_flux', 'ext_photometryKron_KronFlux_fluxSigma',
+               'base_PsfFlux_flux', 'base_PsfFlux_fluxSigma',
+               'ext_photometryKron_KronFlux_apCorr', 'ext_photometryKron_KronFlux_apCorrSigma',
+               'base_PsfFlux_apCorr', 'base_PsfFlux_apCorrSigma',
+               'modelfit_CModel_flux', 'modelfit_CModel_fluxSigma',
+               'modelfit_CModel_exp_apCorr', 'modelfit_CModel_exp_apCorrSigma',
+               'modelfit_CModel_exp_flux', 'modelfit_CModel_exp_flux',
+               'modelfit_CModel_exp_apCorr', 'modelfit_CModel_exp_apCorrSigma',
+               'modelfit_CModel_dev_flux', 'modelfit_CModel_dev_fluxSigma',
+               'modelfit_CModel_dev_apCorr', 'modelfit_CModel_dev_apCorrSigma',
+               'modelfit_CModel_fracDev']
+    measAlias = meas.schema.getAliasMap()
+    newAlias = newSchema.getAliasMap()
+    for aliasKey in measAlias.keys():
+        newAlias.set(aliasKey, measAlias[aliasKey])
     combSrc = SourceCatalog(newSchema)
     combSrc.extend(meas, mapper=mapper)
 
     for key in newCols:
-        combSrc['force.' + key][:] = force[key][:]
-
-    for name in ("Centroid", "Shape"):
-        val = getattr(meas.table, "get" + name + "Key")()
-        err = getattr(meas.table, "get" + name + "ErrKey")()
-        flag = getattr(meas.table, "get" + name + "FlagKey")()
-        getattr(combSrc.table, "define" + name)(val, err, flag)
+        combSrc['force_' + key][:] = force[key][:]
 
     return combSrc
 
@@ -242,13 +239,8 @@ def getFakeSources(butler, dataId, tol=1.0,
     match with the input catalog instead of looking in the header for where the
     sources where added
     """
-    pipeVersion = dafPersist.eupsVersions.EupsVersions().versions['hscPipe']
-    if StrictVersion(pipeVersion) >= StrictVersion('3.9.0'):
-        coaddData = "deepCoadd_calexp"
-        coaddMeta = "deepCoadd_calexp_md"
-    else:
-        coaddData = "deepCoadd"
-        coaddMeta = "deepCoadd_md"
+    coaddData = "deepCoadd_calexp"
+    coaddMeta = "deepCoadd_calexp_md"
 
     availExtras = {'zeropoint': {'type': float, 'doc': 'zeropoint'},
                    'visit': {'type': int, 'doc': 'visit id'},
@@ -259,7 +251,7 @@ def getFakeSources(butler, dataId, tol=1.0,
                                   'doc': 'pixelscale in arcsec/pixel'}}
 
     if not np.in1d(extraCols, availExtras.keys()).all():
-        print "extraCols must be in ", availExtras
+        print("extraCols must be in ", availExtras)
 
     try:
         if 'filter' not in dataId:
@@ -278,8 +270,8 @@ def getFakeSources(butler, dataId, tol=1.0,
             sources = combineWithForce(meas, force)
             cal = butler.get(coaddData, dataId, immediate=True)
             cal_md = butler.get(coaddMeta, dataId, immediate=True)
-    except (lsst.pex.exceptions.LsstException, RuntimeError):
-        print "skipping", dataId
+    except RuntimeError as e:
+        print("skipping", dataId)
         return None
 
     if ('pixelScale' in extraCols) or ('thetaNorth' in extraCols):
@@ -300,7 +292,7 @@ def getFakeSources(butler, dataId, tol=1.0,
         fakeXY, srcIndex = getFakeMatchesHeader(cal_md, sources, tol=tol)
     else:
         if minRad is not None:
-            print "# The min matching radius is %4.1f pixel" % minRad
+            print("# The min matching radius is %4.1f pixel" % minRad)
         bbox = lsst.afw.geom.Box2D(cal.getBBox(lsst.afw.image.PARENT))
         fakeXY, srcIndex, srcClose = getFakeMatchesRaDec(sources,
                                                          radecMatch,
@@ -316,13 +308,13 @@ def getFakeSources(butler, dataId, tol=1.0,
     mapper = SchemaMapper(sources.schema)
     mapper.addMinimalSchema(sources.schema)
     newSchema = mapper.getOutputSchema()
-    newSchema.addField('fakeId', type=int,
+    newSchema.addField('fakeId', type=np.int32,
                        doc='id of fake source matched to position')
-    newSchema.addField('nMatched', type=int,
+    newSchema.addField('nMatched', type=np.int32,
                        doc='Number of matched objects')
-    newSchema.addField('nPrimary', type=int,
+    newSchema.addField('nPrimary', type=np.int32,
                        doc='Number of unique matched objects')
-    newSchema.addField('nNoChild', type=int,
+    newSchema.addField('nNoChild', type=np.int32,
                        doc='Number of matched objects with nchild==0')
     newSchema.addField('rMatched', type=float,
                        doc='Radius used form atching obects, in pixel')
@@ -343,17 +335,17 @@ def getFakeSources(butler, dataId, tol=1.0,
     srcList.reserve(sum([len(s) for s in srcIndex.values()]) +
                     (0 if not includeMissing else srcIndex.values().count([])))
 
-    centroidKey = sources.schema.find('centroid.sdss').getKey()
-    isPrimary = sources.schema.find('detect.is-primary').getKey()
-    nChild = sources.schema.find('force.deblend.nchild').getKey()
+    centroidKey = sources.getCentroidKey()
+    isPrimary = sources.schema.find('detect_isPrimary').getKey()
+    nChild = sources.schema.find('force_deblend_nChild').getKey()
     for ident, sindlist in srcIndex.items():
         rMatched = fakeXY[ident][2]
         if minRad is not None:
             if rMatched < minRad:
                 rMatched = minRad
         nMatched = len(sindlist)
-        nPrimary = np.sum([sources[obj].get(isPrimary) for obj in sindlist])
-        nNoChild = np.sum([(sources[obj].get(nChild) == 0) for
+        nPrimary = np.sum([sources[int(obj)].get(isPrimary) for obj in sindlist])
+        nNoChild = np.sum([(sources[int(obj)].get(nChild) == 0) for
                            obj in sindlist])
         if includeMissing and (nMatched == 0):
             newRec = srcList.addNew()
@@ -363,21 +355,21 @@ def getFakeSources(butler, dataId, tol=1.0,
             newRec.set('rMatched', rMatched)
         for ss in sindlist:
             newRec = srcList.addNew()
-            newRec.assign(sources[ss], mapper)
+            newRec.assign(sources[int(ss)], mapper)
             newRec.set('fakeId', ident)
             newRec.set('nMatched', nMatched)
             newRec.set('nPrimary', nPrimary)
             newRec.set('nNoChild', nNoChild)
             newRec.set('rMatched', rMatched)
-            offsetX = (sources[ss].get(centroidKey).getX() -
+            offsetX = (sources[int(ss)].get(centroidKey).getX() -
                        fakeXY[ident][0])
             newRec.set('fakeOffX', offsetX)
-            offsetY = (sources[ss].get(centroidKey).getY() -
+            offsetY = (sources[int(ss)].get(centroidKey).getY() -
                        fakeXY[ident][1])
             newRec.set('fakeOffY', offsetY)
             newRec.set('fakeOffR', np.sqrt(offsetX ** 2.0 + offsetY ** 2.0))
             if radecMatch:
-                if ss == srcClose[ident]:
+                if int(ss) == int(srcClose[ident]):
                     newRec.set('fakeClosest', True)
                 else:
                     newRec.set('fakeClosest', False)
@@ -477,7 +469,7 @@ def returnMatchSingle(butler, slist, visit, ccd,
                       raCol='RA', decCol='Dec'):
         """Return matched catalog for each CCD or Patch."""
         if filt is None:
-            print 'Doing ccd %d' % int(ccd)
+            print('Doing ccd %d' % int(ccd))
             mlis = getFakeSources(butler,
                                   {'visit': visit, 'ccd': int(ccd)},
                                   includeMissing=includeMissing,
@@ -488,7 +480,7 @@ def returnMatchSingle(butler, slist, visit, ccd,
                                   tol=tol, reffMatch=reffMatch, pix=pix,
                                   minRad=minRad, raCol=raCol, decCol=decCol)
         else:
-            print 'Doing patch %s' % ccd
+            print('Doing patch %s' % ccd)
             mlis = getFakeSources(butler,
                                   {'tract': visit, 'patch': ccd,
                                    'filter': filt},
@@ -501,7 +493,7 @@ def returnMatchSingle(butler, slist, visit, ccd,
                                   minRad=minRad, raCol=raCol, decCol=decCol)
 
         if mlis is None:
-            print '   No match returns!'
+            print('   No match returns!')
         else:
             if slist is None:
                 slist = mlis.copy(True)
@@ -567,7 +559,7 @@ def returnMatchTable(rootDir, visit, ccdList, outfile=None, fakeCat=None,
                         slist.extend(m, True)
                     del m
         except ImportError:
-            print "# Can not import joblib, stop multiprocessing!"
+            print("# Can not import joblib, stop multiprocessing!")
             for ccd in ccdList:
                 slist = returnMatchSingle(butler, slist, visit, ccd,
                                           filt=filt, fakeCat=fakeCat,
@@ -591,7 +583,7 @@ def returnMatchTable(rootDir, visit, ccdList, outfile=None, fakeCat=None,
                                       raCol=raCol, decCol=decCol)
 
     if slist is None:
-        print "Returns no match....!"
+        print("Returns no match....!")
 
         return None
     else:
@@ -605,7 +597,7 @@ def returnMatchTable(rootDir, visit, ccdList, outfile=None, fakeCat=None,
                 astroTable.write(outfile+'.fits', format='fits',
                                  overwrite=overwrite)
             except IOError:
-                print "Try setting the option -w to overwrite the file."
+                print("Try setting the option -w to overwrite the file.")
                 raise
 
         return astroTable

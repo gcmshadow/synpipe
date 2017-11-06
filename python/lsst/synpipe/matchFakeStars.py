@@ -97,7 +97,6 @@ def main():
     print("# FakeX  FakeY  PSFMag  PSFMagErr  Deblend ")
 
     for i in range(nInject):
-        #print starIndex[i][0], starList[i]['flux.psf']
         if len(starIndex[i]) > 1:
             deblend = "blended"
         elif starPsfMag[i] > 0:

@@ -167,7 +167,7 @@
 
 * Config file: `dr1_8766_HSC-I_highn.config`
     ```
-    from fakes import positionGalSimFakes
+    from lsst.synpipe import positionGalSimFakes
     root.fakes.retarget(positionGalSimFakes.PositionGalSimFakesTask)
     root.fakes.galList = 'src_8766_radec_I_highn.fits'
     root.fakes.galType = 'sersic'
@@ -931,7 +931,7 @@
 
 * Config file: `dr1_8766_HSC-I_UDG.config`
     ```
-    from fakes import positionGalSimFakes
+    from lsst.synpipe import positionGalSimFakes
     root.fakes.retarget(positionGalSimFakes.PositionGalSimFakesTask)
     root.fakes.galList = 'src_8766_UDG_I.fits'
     root.fakes.galType = 'sersic'
@@ -1083,7 +1083,7 @@
 
 * Config file: `dr1_8766_HSC-I_UDG_grid.config`
     ```
-    from fakes import positionGalSimFakes
+    from lsst.synpipe import positionGalSimFakes
     root.fakes.retarget(positionGalSimFakes.PositionGalSimFakesTask)
     root.fakes.galList = 'src_8766_UDG_grid_45.0asec_I.fits'
     root.fakes.galType = 'sersic'

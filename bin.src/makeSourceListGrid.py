@@ -19,7 +19,7 @@ import astropy.table
 import lsst.utils
 import lsst.pipe.base as pipeBase
 import lsst.pex.config as pexConfig
-import lsst.pipe.tasks.coaddBase as coaddBase
+from lsst.synpipe.FakeSourceLib import SkyMapIdContainer
 
 DEFAULT_CATALOG_PATH = os.path.join(lsst.utils.getPackageDir('synpipe'),
                                    'catalogs', 'cosmos_25.2_multiband.fits')
@@ -337,7 +337,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                                          *args, **kwargs)
         parser.add_id_argument("--id", datasetType="deepCoadd",
                                help="data ID, e.g. --id tract=0",
-                               ContainerClass=coaddBase.CoaddDataIdContainer)
+                               ContainerClass=SkyMapIdContainer)
 
         return parser
 

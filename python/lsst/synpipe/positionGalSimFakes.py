@@ -241,9 +241,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
                                             PARENT)
                 galBBox = newBBox
 
-            # Add Noise: Optional?
-            galMaskedImage = fsl.addNoise(galImage, exposure.getDetector(),
-                                          rand_gen=self.npRand)
+            galMaskedImage = lsst.afw.image.MaskedImageF(galImage)
 
             # Put information of the added fake galaxies into the header
             md.set("FAKE%s" % str(galident), "%.3f, %.3f" % (galXY.getX(),

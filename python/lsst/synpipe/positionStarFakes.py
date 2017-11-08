@@ -90,9 +90,7 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
                 starImage = starImage.Factory(starImage, newBBox, PARENT)
                 starBBox = newBBox
 
-            starMaskedImage = fsl.addNoise(starImage.convertF(),
-                                           exposure.getDetector(),
-                                           rand_gen=self.npRand)
+            starMaskedImage = afwImage.MaskedImageF(starImage)
 
             starMaskedImage.getMask().set(self.bitmask)
 

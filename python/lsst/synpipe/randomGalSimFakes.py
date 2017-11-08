@@ -100,7 +100,8 @@ class RandomGalSimFakesTask(BaseFakeSourcesTask):
                 galImage = galImage.Factory(galImage, newBBox, lsst.afw.image.PARENT)
                 galBBox = newBBox
 
-            galMaskedImage = fsl.addNoise(galImage, exposure.getDetector(), rand_gen=self.npRand)
+            galMaskedImage = lsst.afw.image.MaskedImageF(galImage)
+
             mask = galMaskedImage.getMask()
             mask.set(self.bitmask)
 

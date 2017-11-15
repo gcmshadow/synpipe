@@ -14,9 +14,9 @@ import astropy.table
 import lsst.utils
 import lsst.pipe.base as pipeBase
 import lsst.pex.config as pexConfig
-import lsst.pipe.tasks.coaddBase as coaddBase
 
 import lsst.synpipe.makeRaDecCat as makeRaDecCat
+from lsst.synpipe.FakeSourceLib import SkyMapIdContainer
 
 DEFAULT_CATALOG_PATH = os.path.join(lsst.utils.getPackageDir('synpipe'),
                                     'catalogs', 'cosmos_25.2_multiband.fits')
@@ -188,16 +188,16 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                                                            data=mergedData[mag]))
                     filt = mag.split('_')[1].upper()
                     outFits = os.path.join(self.config.outDir,
-                                           'src_%d_radec_%s.fits' % (tractId,
+                                           'src_{}_radec_{}.fits'.format(tractId,
                                                                      filt))
                     outTab.write(outFits, overwrite=True)
             else:
                 outTab.write(os.path.join(self.config.outDir,
-                                          'src_%d_radec.fits' % tractId),
+                                          'src_{}_radec.fits'.format(tractId)),
                              overwrite=True)
         else:
             outTab.write(os.path.join(self.config.outDir,
-                                      'src_%d_radec_only.fits' % tractId),
+                                      'src_{}_radec_only.fits'.format(tractId)),
                          overwrite=True)
 
     @classmethod
@@ -206,7 +206,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                                          *args, **kwargs)
         parser.add_id_argument("--id", datasetType="deepCoadd",
                                help="data ID, e.g. --id tract=0",
-                               ContainerClass=coaddBase.CoaddDataIdContainer)
+                               ContainerClass=SkyMapIdContainer)
 
         return parser
 

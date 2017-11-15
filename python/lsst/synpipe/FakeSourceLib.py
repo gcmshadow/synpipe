@@ -8,12 +8,37 @@ import lsst.afw.math
 import lsst.pex.config
 import lsst.afw.image
 import lsst.afw.cameraGeom
+import lsst.pipe.base as pipeBase
 
 
 """
 Helper functions for making fake sources
 """
 
+
+class SkyMapIdContainer(pipeBase.DataIdContainer):
+    """A version of lsst.pipe.base.DataIdContainer specialized for loading a skyMap
+    in the make fake source catalog scripts. These scripts use the data id in a
+    unique way, such that they only need a tract number. This class supports that
+    use case and should not be used in any other contexts in the LSST stack.
+    Required because butler.subset does not support only tract
+    """
+
+    def makeDataRefList(self, namespace):
+        """Make self.refList from self.idList
+        """
+
+        for dataId in self.idList:
+            if "tract" not in dataId:
+                raise RuntimeError("id must specify which tract to process tract")
+            # warn about unused options
+            for key in dataId:
+                if key != "tract":
+                    namespace.log.warn("'{}' specified in --id is unused and will be ignored".format(key))
+            addList = [dataId]
+
+            self.refList += [namespace.butler.dataRef(datasetType="deepCoadd_skyMap", dataId=addId)
+                             for addId in addList]
 
 def cropFakeImage(fakeImage, expBBox):
     """

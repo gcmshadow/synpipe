@@ -51,7 +51,8 @@ class RandomStarFakeSourcesTask(BaseFakeSourcesTask):
             self.log.info("Adding fake at: %.1f,%.1f" % (x, y))
             psfImage = psf.computeImage(lsst.afw.geom.Point2D(x, y))
             psfImage *= flux
-            psfMaskedImage = fsl.addNoise(psfImage.convertF(), exposure.getDetector(), rand_gen=self.npRand)
+
+            psfMaskedImage = lsst.afw.image.MaskedImageF(psfImage.convertF())
 
             mask = psfMaskedImage.getMask()
             mask.set(self.bitmask)

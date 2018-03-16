@@ -10,7 +10,6 @@ import pyfits as fits
 
 import lsst.afw.geom as afwGeom
 import lsst.afw.math as afwMath
-import lsst.afw.coord as afwCoord
 import lsst.afw.image as afwImage
 import lsst.pex.config as afwConfig
 
@@ -63,8 +62,7 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
                 raise KeyError("No mag column in %s" % self.config.starList)
 
             try:
-                starCoord = afwCoord.Coord(afwGeom.Point2D(star['RA'],
-                                                           star['DEC']))
+                starCoord = afwGeom.SpherePoint(star['RA'], star['DEC'], afwGeom.degrees)
             except KeyError:
                 raise KeyError("No RA/DEC column in table".format(self.config.starList))
 

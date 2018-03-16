@@ -71,7 +71,6 @@ def getRandomRaDec(nRand, minRa, maxRa, minDec, maxDec, rad=None):
         decArr = uniform(low=minDec, high=maxDec, size=nRand)
         return list(zip(raArr, decArr))
     else:
-        import lsst.afw.coord as afwCoord
         import lsst.afw.geom as afwGeom
 
         minSep = float(rad)
@@ -86,13 +85,12 @@ def getRandomRaDec(nRand, minRa, maxRa, minDec, maxDec, rad=None):
             else:
                 raTry = uniform(low=minRa, high=maxRa)
                 decTry = uniform(low=minDec, high=maxDec)
-                coordTry = afwCoord.Coord(afwGeom.Point2D(raTry, decTry))
+                coordTry = afwGeom.SpherePoint(raTry, decTry, afwGeom.degrees)
                 nExist = len(raArr)
                 sepGood = True
                 for ii in range(nExist):
-                    coordTest = afwCoord.Coord(afwGeom.Point2D(raArr[ii],
-                                                               decArr[ii]))
-                    sep = coordTry.angularSeparation(coordTest).asArcseconds()
+                    coordTest = afwGeom.SpherePoint(raArr[ii], decArr[ii], afwGeom.degrees)
+                    sep = coordTry.separation(coordTest).asArcseconds()
                     if sep <= minSep:
                         sepGood = False
                         break

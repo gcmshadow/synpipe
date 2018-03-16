@@ -409,7 +409,6 @@ def getAstroTable(src, mags=True):
                                                 data=src.get(nameKey)))
         except lsst.pex.exceptions.LsstException:
             quadrupole = lsst.afw.geom.ellipses.ellipsesLib.Quadrupole
-            icrscoord = lsst.afw.coord.coordLib.IcrsCoord
             if type(src[0].get(nameKey)) is quadrupole:
                 """Check for shape measurements"""
                 reff, q, theta = list(zip(*[getEllipse(s.get(nameKey))
@@ -420,7 +419,7 @@ def getAstroTable(src, mags=True):
                                                     data=q))
                 tab.add_column(astropy.table.Column(name=name+'_theta',
                                                     data=theta))
-            elif type(src[0].get(nameKey)) is icrscoord:
+            elif type(src[0].get(nameKey)) is lsst.afw.geom.SpherePoint:
                 """Check for coordinate measurements"""
                 x, y = list(zip(*[(s.get(nameKey).getRa().asDegrees(),
                               s.get(nameKey).getDec().asDegrees())

@@ -14,7 +14,6 @@ import lsst.afw.image
 import lsst.afw.geom
 import lsst.afw.math
 import lsst.afw.cameraGeom
-import lsst.afw.coord
 import lsst.pex.config as lsstConfig
 
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
@@ -100,8 +99,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
                 raise KeyError("No mag column in %s" % self.config.galList)
 
             try:
-                coordAdd = lsst.afw.geom.Point2D(gal['RA'], gal['DEC'])
-                galCoord = lsst.afw.coord.Coord(coordAdd)
+                galCoord = lsst.afw.geom.SpherePoint(gal['RA'], gal['DEC'], lsst.afw.geom.degrees)
             except KeyError:
                 raise KeyError("No RA/DEC column in {} table".format(self.config.galList))
 

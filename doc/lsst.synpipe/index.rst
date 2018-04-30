@@ -16,6 +16,8 @@ Using lsst.synpipe
 .. toctree::
    :maxdepth: 1
 
+   quick-start.rst
+
 Python API reference
 ====================
 

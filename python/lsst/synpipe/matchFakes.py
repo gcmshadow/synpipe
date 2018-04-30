@@ -181,10 +181,10 @@ def getFakeMatchesRaDec(sources, radecCatFile, bbox, wcs, tol=1.0,
         raise
 
     for fakeSrc in fakeCat:
-        fakeCoord = wcs.skyToPixel(lsst.afw.geom.Angle(fakeSrc[raCol],
-                                                       lsst.afw.geom.degrees),
-                                   lsst.afw.geom.Angle(fakeSrc[decCol],
-                                                       lsst.afw.geom.degrees))
+
+        fakePix = lsst.afw.geom.SpherePoint(fakeSrc[raCol], fakeSrc[decCol], lsst.afw.geom.degrees)
+        fakeCoord = wcs.skyToPixel(fakePix)
+
         if bbox.contains(fakeCoord):
             if reffMatch:
                 fakeXY[int(fakeSrc['ID'])] = (fakeCoord.getX(),
@@ -279,10 +279,19 @@ def getFakeSources(butler, dataId, tol=1.0,
 
     if ('pixelScale' in extraCols) or ('thetaNorth' in extraCols):
         wcs = cal.getWcs()
-        availExtras['pixelScale']['value'] = wcs.pixelScale().asArcseconds()
-        availExtras['thetaNorth']['value'] = lsst.afw.geom.Angle(
-            np.arctan2(*tuple(wcs.getLinearTransform().invert()
-                              (lsst.afw.geom.Point2D(1.0, 0.0)))))
+        availExtras['pixelScale']['value'] = wcs.getPixelScale().asArcseconds()
+        # The 8 lines of code below find the angle to north, first the mid pixel of the calexp is found,
+        # then the pixel to sky matrix at this point, the coordinate this gives can then be used to find the
+        # linearized sky to pixel matrix which can then be used to find the angle.
+        xMid = cal.getWidth() // 2
+        yMid = cal.getHeight() // 2
+        midPoint = lsst.afw.geom.Point2D(xMid, yMid)
+        midCoord = wcs.pixelToSky(midPoint)
+        northSkyToPixelMatrix = wcs.linearizeSkyToPixel(midCoord, lsst.afw.geom.degrees)
+        northSkyToPixelMatrix = northSkyToPixelMatrix.getLinear()
+        availExtras['thetaNorth']['value'] = lsst.afw.geom.Angle(np.arctan2(*tuple(northSkyToPixelMatrix
+                                             (lsst.afw.geom.Point2D(1.0, 0.0)))))
+
     if 'visit' in extraCols:
         availExtras['visit']['value'] = dataId['visit']
     if 'ccd' in extraCols:

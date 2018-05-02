@@ -72,8 +72,6 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
         calib = exposure.getCalib()
         expBBox = exposure.getBBox(PARENT)
         wcs = exposure.getWcs()
-        skyToPixelMatrix = (wcs.getLinearTransform().invert().getMatrix() /
-                            3600.0)
 
         """Deal with the skipped ones."""
         skipLog = 'runAddFake.skipped'
@@ -102,6 +100,9 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
                 galCoord = lsst.afw.geom.SpherePoint(gal['RA'], gal['DEC'], lsst.afw.geom.degrees)
             except KeyError:
                 raise KeyError("No RA/DEC column in {} table".format(self.config.galList))
+
+            skyToPixelMatrix = wcs.linearizeSkyToPixel(galCoord, lsst.afw.geom.degrees)
+            skyToPixelMatrix = skyToPixelMatrix.getLinear().getParameterVector() / 3600.0
 
             galXY = wcs.skyToPixel(galCoord)
             bboxI = exposure.getBBox(PARENT)

@@ -68,7 +68,7 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
 
             starXY = wcs.skyToPixel(starCoord)
             bboxI = exposure.getBBox(PARENT)
-            bboxI.grow(margin)
+            bboxI.grow(int(margin))
             if not bboxI.contains(afwGeom.Point2I(starXY)):
                 continue
 
@@ -88,7 +88,7 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
                 starImage = starImage.Factory(starImage, newBBox, PARENT)
                 starBBox = newBBox
 
-            starMaskedImage = afwImage.MaskedImageF(starImage)
+            starMaskedImage = afwImage.MaskedImageF(starImage.convertF())
 
             starMaskedImage.getMask().set(self.bitmask)
 

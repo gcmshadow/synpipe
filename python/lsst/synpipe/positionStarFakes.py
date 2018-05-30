@@ -14,6 +14,7 @@ import lsst.afw.image as afwImage
 import lsst.pex.config as afwConfig
 
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
+from lsst.pex.exceptions import InvalidParameterError
 
 from . import FakeSourceLib as fsl
 
@@ -72,7 +73,16 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
             if not bboxI.contains(afwGeom.Point2I(starXY)):
                 continue
 
-            starImage = psf.computeImage(starXY)
+            try:
+                starImage = psf.computeImage(starXY)
+            except InvalidParameterError:
+                # This means an image was computed in an area where there was no data
+                # continue on to the next star. This is most likely to occur when inserting
+                # into coadds
+                logmsg = "Skipping fake {} because no input images present at point {}"
+                self.log.info(logmsg.format(starident, starXY))
+                continue
+
             starImage *= flux
             starBBox = starImage.getBBox(PARENT)
 

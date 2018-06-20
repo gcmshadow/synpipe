@@ -1,4 +1,5 @@
 import numpy as np
+import astropy.io.fits
 
 import lsst.afw.image
 import lsst.afw.geom
@@ -6,8 +7,6 @@ import lsst.afw.math
 import lsst.afw.cameraGeom
 import lsst.pex.config
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
-import pyfits as fits
-
 import lsst.synpipe.makeFakeGalaxy as makeFake
 
 
@@ -34,7 +33,7 @@ class RandomGalSimFakesTask(BaseFakeSourcesTask):
         print("RNG seed:", self.config.seed)
         self.rng = lsst.afw.math.Random(seed=self.config.seed)
         self.npRand = np.random.RandomState(self.config.seed)
-        self.galData = fits.open(self.config.galList)[1].data
+        self.galData = astropy.io.fits.open(self.config.galList)[1].data
 
     def run(self, exposure, background):
 

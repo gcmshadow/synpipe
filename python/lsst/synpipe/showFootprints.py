@@ -2,10 +2,7 @@
 """
 function to show a list of src footprints in a mosaic
 """
-from __future__ import absolute_import
 
-from builtins import str
-from builtins import range
 import argparse
 
 import lsst.afw.image

@@ -8,9 +8,6 @@ The inputs can be:
    3. DataId for coadd image: (tract, patch, filter)
 """
 
-from builtins import map
-from builtins import zip
-from builtins import range
 import os
 import warnings
 

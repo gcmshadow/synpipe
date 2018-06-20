@@ -3,10 +3,7 @@
 matchFakes.py
 matches fakes based on position stored in the calibrated exposure image header
 """
-from __future__ import print_function
 
-from builtins import map
-from builtins import range
 import lsst.daf.persistence as dafPersist
 import numpy as np
 import argparse

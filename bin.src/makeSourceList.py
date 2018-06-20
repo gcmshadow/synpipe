@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 """make a source catalog of galaxies, possibly with shear."""
-from __future__ import print_function
-from builtins import zip
-from builtins import map
-from builtins import range
 import os
 import warnings
 

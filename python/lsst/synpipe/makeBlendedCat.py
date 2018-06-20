@@ -1,8 +1,5 @@
 """Make a catalog of fakes that are highly blended."""
 
-from __future__ import (division, print_function)
-from builtins import range
-
 import os
 import random
 import argparse

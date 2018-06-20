@@ -4,11 +4,7 @@
 Generate grid of RA, DEC for fake objects.
 Author: Ryoma Murata : 2016-04-15.
 """
-from __future__ import print_function
 
-from builtins import zip
-from builtins import map
-from builtins import range
 import os
 import warnings
 

@@ -4,7 +4,6 @@ runMatchFakes.py
 matches fakes based on position stored in the calibrated exposure image header
 """
 
-from builtins import range
 import argparse
 import lsst.synpipe.matchFakes as matchFakes
 

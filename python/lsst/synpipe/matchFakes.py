@@ -5,11 +5,6 @@ matchFakes.py.
 Matches fakes based on position stored in the calibrated exposure image header
 """
 
-from __future__ import division
-from __future__ import print_function
-
-from builtins import map
-from builtins import zip
 import re
 import argparse
 import collections

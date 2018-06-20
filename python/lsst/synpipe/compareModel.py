@@ -2,7 +2,6 @@
 """
 Compare the input fake galaxy model to the output one
 """
-from __future__ import absolute_import
 import argparse
 
 import numpy as np

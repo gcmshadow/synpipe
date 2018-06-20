@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Compare the input fake galaxy model to the output one
 """

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 function to show a list of src footprints in a mosaic
 """

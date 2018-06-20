@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 Create N random selected (RA, Dec) pairs within a desired region.
 The inputs can be:

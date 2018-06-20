@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 matchFakes.py
 matches fakes based on position stored in the calibrated exposure image header

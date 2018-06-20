@@ -8,7 +8,6 @@ from __future__ import print_function
 from builtins import map
 from builtins import range
 import lsst.daf.persistence as dafPersist
-from lsst.afw.table.tableLib import SourceCatalog
 import numpy as np
 import argparse
 import re
@@ -47,20 +46,13 @@ def getFakeSources(rootdir, dataId, tol=0.1):
     for fid, fcoord in fakeXY.items():
         matched = ((np.abs(srcX-fcoord[0]) < tol) &
                    (np.abs(srcY-fcoord[1]) < tol))
-        s1 = sources.subset(matched)
         srcIndex[fid] = np.where(matched)[0]
 
-    #srcList    = None
     srcPsfMag = []
     srcPsfMerr = []
     matchX = []
     matchY = []
     for s in srcIndex.values():
-        #for ss in s:
-        #if srcList is None:
-        #   srcList = SourceCatalog(sources.getSchema())
-        #   srcList.append(sources[ss])
-        #
         if len(s) > 0:
             ss = s[0]
             srcPsfMag.append(mag[ss])
@@ -78,16 +70,16 @@ def getFakeSources(rootdir, dataId, tol=0.1):
 
 def main():
 
-    #TODO: this should use the LSST/HSC conventions
+    # TODO: this should use the LSST/HSC conventions
     parser = argparse.ArgumentParser()
     parser.add_argument('rootDir', help='root dir of data repo')
     parser.add_argument('visit', help='id of visit', type=int)
     parser.add_argument('ccd', help='id of ccd', type=int)
     args = parser.parse_args()
 
-    #(starIndex,starList) = getFakeSources(args.rootDir, {'visit':args.visit, 'ccd':args.ccd})
-    (starIndex, fakeXY, matchX, matchY, starPsfMag, starPsfMerr) = getFakeSources(args.rootDir,
-                                                                                  {'visit': args.visit, 'ccd': args.ccd})
+    starIndex, fakeXY, matchX, matchY, starPsfMag, starPsfMerr = getFakeSources(args.rootDir,
+                                                                                {'visit': args.visit,
+                                                                                 'ccd': args.ccd})
 
     nInject = len(fakeXY)
     nMatch = len(np.argwhere(starPsfMag))

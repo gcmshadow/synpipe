@@ -6,7 +6,6 @@ import lsst.afw.math
 import lsst.pex.config
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 
-import lsst.synpipe.FakeSourceLib as fsl
 import numpy as np
 
 

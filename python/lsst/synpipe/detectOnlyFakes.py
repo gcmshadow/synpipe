@@ -1,18 +1,16 @@
-import random
 import lsst.pex.config as pexConfig
 import lsst.pipe.base as pipeBase
 import lsst.afw.table as afwTable
-import lsst.afw.image as afwImage
 import lsst.meas.algorithms as measAlg
 import lsst.afw.detection as afwDetect
 
-#WARNING: if you want to add configuration variables (maybe how close you are
-#to a fake object), you will need to deal with the fact that the configuration
-#for a retargeted subtask (like this one) blows away any overrides in setDefault of
-#the parent task (processCoadd in this case) and, it seems any camera specific
-#overrides in $OBS_SUBARU/config/hsc/processCcd.py.
-#See https://dev.lsstcorp.org/trac/ticket/2282 for more details
-#I think you need something like cmdLineTask.applyOverrides to deal with this
+# WARNING: if you want to add configuration variables (maybe how close you are
+# to a fake object), you will need to deal with the fact that the configuration
+# for a retargeted subtask (like this one) blows away any overrides in setDefault of
+# the parent task (processCoadd in this case) and, it seems any camera specific
+# overrides in $OBS_SUBARU/config/hsc/processCcd.py.
+# See https://dev.lsstcorp.org/trac/ticket/2282 for more details
+# I think you need something like cmdLineTask.applyOverrides to deal with this
 
 
 class OnlyFakesDetectionConfig(measAlg.SourceDetectionTask.ConfigClass):
@@ -23,9 +21,9 @@ class OnlyFakesDetectionConfig(measAlg.SourceDetectionTask.ConfigClass):
 class OnlyFakesDetectionTask(measAlg.SourceDetectionTask):
     """This task serves culls the source list to sources which overlap with fakes"""
 
-    ##WARNING: we are using the parent configuration class instead of the
-    ##OnlyFakesDetectionConfig to avoid having to fix overridden config parameters
-    ##from processCoaddConfig.setDefaults and from the camera-specific $OBS_SUBARU/config
+    # WARNING: we are using the parent configuration class instead of the
+    # OnlyFakesDetectionConfig to avoid having to fix overridden config parameters
+    # from processCoaddConfig.setDefaults and from the camera-specific $OBS_SUBARU/config
     ConfigClass = measAlg.SourceDetectionConfig
 
     def makeSourceCatalog(self, table, exposure, doSmooth=True, sigma=None, clearMask=True):
@@ -36,7 +34,7 @@ class OnlyFakesDetectionTask(measAlg.SourceDetectionTask):
         fpSets = self.detectFootprints(exposure=exposure, doSmooth=doSmooth, sigma=sigma,
                                        clearMask=clearMask)
 
-        #ignore objects whose footprints do NOT overlap with the 'FAKE' mask
+        # ignore objects whose footprints do NOT overlap with the 'FAKE' mask
         mask = exposure.getMaskedImage().getMask()
         fakebit = mask.getPlaneBitMask('FAKE')
         fpPos = fpSets.positive.getFootprints()

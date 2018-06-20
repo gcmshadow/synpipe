@@ -13,7 +13,6 @@ from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 import pyfits as fits
 
 import lsst.synpipe.makeFakeGalaxy as makeFake
-import lsst.synpipe.FakeSourceLib as fsl
 
 
 class RandomGalSimFakesConfig(BaseFakeSourcesConfig):
@@ -68,8 +67,8 @@ class RandomGalSimFakesTask(BaseFakeSourcesTask):
             except KeyError:
                 raise KeyError("No mag column in %s table"%self.config.galList)
 
-            #don't put the galaxy within one PSF box of the edge
-            #or within the given pixel margin
+            # don't put the galaxy within one PSF box of the edge
+            # or within the given pixel margin
             if self.config.margin is not None:
                 margin = self.config.margin
             else:
@@ -79,7 +78,7 @@ class RandomGalSimFakesTask(BaseFakeSourcesTask):
             bboxD = lsst.afw.geom.BoxD(bboxI)
             x = self.rng.flat(bboxD.getMinX(), bboxD.getMaxX())
             y = self.rng.flat(bboxD.getMinY(), bboxD.getMaxY())
-            #TODO: check for overlaps here and regenerate x,y if necessary
+            # TODO: check for overlaps here and regenerate x,y if necessary
 
             psfImage = psf.computeKernelImage(lsst.afw.geom.Point2D(x, y))
             galArray = makeFake.makeGalaxy(flux, gal, psfImage.getArray(), self.config.galType,
@@ -92,7 +91,7 @@ class RandomGalSimFakesTask(BaseFakeSourcesTask):
                                                  'lanczos3')
             galBBox = galImage.getBBox(lsst.afw.image.PARENT)
 
-           #check that we're within the larger exposure, otherwise crop
+            # check that we're within the larger exposure, otherwise crop
             if expBBox.contains(galImage.getBBox(lsst.afw.image.PARENT)) is False:
                 newBBox = galImage.getBBox(lsst.afw.image.PARENT)
                 newBBox.clip(expBBox)
@@ -108,7 +107,7 @@ class RandomGalSimFakesTask(BaseFakeSourcesTask):
             md.set("FAKE%d" % gal['ID'], "%.3f, %.3f" % (x, y))
             self.log.info("Adding fake at: %.1f,%.1f" % (x, y))
 
-            #TODO: set the mask
+            # TODO: set the mask
             galMaskedImage.getMask().set(self.bitmask)
             subMaskedImage = exposure.getMaskedImage().Factory(exposure.getMaskedImage(),
                                                                galMaskedImage.getBBox(lsst.afw.image.PARENT),

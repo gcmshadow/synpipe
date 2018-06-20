@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
-
 from __future__ import print_function
 from __future__ import absolute_import
 from builtins import str
@@ -15,8 +12,6 @@ import lsst.pex.config as afwConfig
 
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 from lsst.pex.exceptions import InvalidParameterError
-
-from . import FakeSourceLib as fsl
 
 
 class PositionStarFakesConfig(BaseFakeSourcesConfig):

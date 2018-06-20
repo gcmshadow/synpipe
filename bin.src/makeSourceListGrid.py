@@ -22,7 +22,7 @@ import lsst.pex.config as pexConfig
 from lsst.synpipe.FakeSourceLib import SkyMapIdContainer
 
 DEFAULT_CATALOG_PATH = os.path.join(lsst.utils.getPackageDir('synpipe'),
-                                   'catalogs', 'cosmos_25.2_multiband.fits')
+                                    'catalogs', 'cosmos_25.2_multiband.fits')
 
 
 def InputFakesGrid(ra_min, ra_max, dec_min, dec_max, separation_angle):
@@ -237,8 +237,8 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                     acpWkb.close()
 
                     inside = np.asarray(list(map(lambda x, y:
-                                            acpPrep.contains(Point(x, y)),
-                                            raArr, decArr)))
+                                             acpPrep.contains(Point(x, y)),
+                                             raArr, decArr)))
                 else:
                     inside = np.isfinite(raArr)
 
@@ -251,13 +251,13 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                     rejPrep = prep(rejRegs)
                     rejWkb.close()
                     masked = np.asarray(list(map(lambda x, y:
-                                            rejPrep.contains(Point(x, y)),
-                                            raArr, decArr)))
+                                             rejPrep.contains(Point(x, y)),
+                                             raArr, decArr)))
                 else:
                     masked = np.isnan(raArr)
 
                 useful = np.asarray(list(map(lambda x, y: x and (not y),
-                                        inside, masked)))
+                                         inside, masked)))
                 ra, dec = raArr[useful], decArr[useful]
 
                 print("## %d out of %d objects left" % (len(ra), len(raArr)))

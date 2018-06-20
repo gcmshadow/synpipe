@@ -18,7 +18,6 @@ import lsst.pex.config as lsstConfig
 
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 
-from . import FakeSourceLib as fsl
 from . import makeFakeGalaxy as makeFake
 
 
@@ -129,7 +128,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
             #  The returned image is normalized to sum to unity.
             try:
                 psfImage = psf.computeKernelImage(galXY)
-            except:
+            except Exception:
                 # There may not be any data at this point, and the object
                 # should be skipped
                 continue

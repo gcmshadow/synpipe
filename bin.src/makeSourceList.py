@@ -94,11 +94,11 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
 
         radUse = self.config.rad
         raArr, decArr = np.array(list(zip(*makeRaDecCat.getRandomRaDec(nFakes,
-                                                                  ra0,
-                                                                  ra1,
-                                                                  dec0,
-                                                                  dec1,
-                                                                  rad=radUse))))
+                                                                       ra0,
+                                                                       ra1,
+                                                                       dec0,
+                                                                       dec1,
+                                                                       rad=radUse))))
         """
         Added by Song Huang 2016-09-01
         Filter the random RA, DEC using two filters
@@ -118,8 +118,8 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                     acpPrep = prep(acpRegs)
                     acpWkb.close()
                     inside = np.asarray(list(map(lambda x, y:
-                                            acpPrep.contains(Point(x, y)),
-                                            raArr, decArr)))
+                                             acpPrep.contains(Point(x, y)),
+                                             raArr, decArr)))
                 else:
                     inside = np.isfinite(raArr)
 
@@ -132,13 +132,13 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                     rejPrep = prep(rejRegs)
                     rejWkb.close()
                     masked = np.asarray(list(map(lambda x, y:
-                                            rejPrep.contains(Point(x, y)),
-                                            raArr, decArr)))
+                                             rejPrep.contains(Point(x, y)),
+                                             raArr, decArr)))
                 else:
                     masked = np.isnan(raArr)
 
                 useful = np.asarray(list(map(lambda x, y: x and (not y),
-                                        inside, masked)))
+                                         inside, masked)))
                 ra, dec = raArr[useful], decArr[useful]
 
                 print("## %d out of %d objects left" % (len(ra), len(raArr)))
@@ -188,8 +188,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
                                                            data=mergedData[mag]))
                     filt = mag.split('_')[1].upper()
                     outFits = os.path.join(self.config.outDir,
-                                           'src_{}_radec_{}.fits'.format(tractId,
-                                                                     filt))
+                                           'src_{}_radec_{}.fits'.format(tractId, filt))
                     outTab.write(outFits, overwrite=True)
             else:
                 outTab.write(os.path.join(self.config.outDir,

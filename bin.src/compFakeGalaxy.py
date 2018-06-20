@@ -33,7 +33,7 @@ def getGalaxy(rootdir, visit, ccd, tol):
     # Get the X, Y locations of objects on the CCD
     srcX, srcY = sources.getX(), sources.getY()
     # Get the zeropoint
-    zeropoint = (2.5 * np.log10(cal_md.get("FLUXMAG0")))
+    zeropoint = (2.5 * np.log10(cal_md.getScalar("FLUXMAG0")))
     # Get the parent ID
     parentID = sources.get('parent')
     # Check the star/galaxy separation
@@ -58,7 +58,7 @@ def getGalaxy(rootdir, visit, ccd, tol):
         m = fakename.match(card)
         if m is not None:
             # Get the X,Y location for fake object
-            x, y = list(map(float, (cal_md.get(card)).split(',')))
+            x, y = list(map(float, (cal_md.getScalar(card)).split(',')))
             # Get the ID or index of the fake object
             fakeID = int(m.group(1))
             fakeList[counts] = [fakeID, x, y]

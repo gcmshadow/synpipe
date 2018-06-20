@@ -26,7 +26,7 @@ def getFakeSources(rootdir, dataId, tol=0.1):
     # Get the X, Y locations of objects on the CCD
     srcX, srcY = sources.getX(), sources.getY()
     # Get the zeropoint
-    zeropoint = 2.5*np.log10(cal_md.get("FLUXMAG0"))
+    zeropoint = 2.5*np.log10(cal_md.getScalar("FLUXMAG0"))
     # Get the PSF flux and its error
     flux, ferr = sources.getPsfFlux(), sources.getPsfFluxErr()
     # Convert them into magnitude and its error
@@ -40,7 +40,7 @@ def getFakeSources(rootdir, dataId, tol=0.1):
     for card in cal_md.names():
         m = fakename.match(card)
         if m is not None:
-            x, y = list(map(float, (cal_md.get(card)).split(',')))
+            x, y = list(map(float, (cal_md.getScalar(card)).split(',')))
             fakeXY[int(m.group(1))] = (x, y)
 
     srcIndex = collections.defaultdict(list)

@@ -135,7 +135,7 @@ def getFakeMatchesHeader(cal_md, sources, tol=1.0):
     for card in cal_md.names():
         m = fakename.match(card)
         if m is not None:
-            x, y = list(map(float, (cal_md.get(card)).split(',')))
+            x, y = list(map(float, (cal_md.getScalar(card)).split(',')))
             fakeXY[int(m.group(1))] = (x, y)
 
     srcX, srcY = sources.getX(), sources.getY()
@@ -297,7 +297,7 @@ def getFakeSources(butler, dataId, tol=1.0,
     if 'ccd' in extraCols:
         availExtras['ccd']['value'] = dataId['ccd']
     if 'zeropoint' in extraCols:
-        zeropoint = 2.5 * np.log10(cal_md.get('FLUXMAG0'))
+        zeropoint = 2.5 * np.log10(cal_md.getScalar('FLUXMAG0'))
         availExtras['zeropoint']['value'] = zeropoint
 
     if radecMatch is None:

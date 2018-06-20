@@ -4,7 +4,9 @@
 import os
 import argparse
 import itertools
+
 import numpy as np
+
 import lsst.daf.persistence as dafPersist
 from distutils.version import StrictVersion
 

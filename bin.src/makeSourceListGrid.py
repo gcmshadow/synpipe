@@ -9,7 +9,6 @@ import os
 import warnings
 
 import numpy as np
-
 import astropy.table
 
 import lsst.utils

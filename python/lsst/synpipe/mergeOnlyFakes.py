@@ -1,7 +1,6 @@
 import lsst.pex.config as pexConfig
 import lsst.afw.detection as afwDetect
 import lsst.pipe.tasks.multiBand as mBand
-
 from lsst.pipe.tasks.coaddBase import getSkyInfo
 
 # WARNING: if you want to add configuration variables (maybe how close you are

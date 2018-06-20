@@ -1,10 +1,9 @@
 import warnings
 
 import numpy as np
+import astropy.fits.io
 
 import galsim
-
-import pyfits as fits
 
 
 def makeGalaxy(flux, gal, psfImage,
@@ -606,7 +605,7 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
                                                  ('b_a', 'float'),
                                                  ('theta', 'float')])
         else:
-            galData = fits.open(galList)[1].data
+            galData = astropy.io.fits.open(galList)[1].data
 
         for igal, gal in enumerate(galData):
 
@@ -630,7 +629,7 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
         if asciiTab:
             raise Exception("For now, only FITS input is allowed !!")
         else:
-            galData = fits.open(galList)[1].data
+            galData = astropy.io.fits.open(galList)[1].data
 
         for igal, gal in enumerate(galData):
 
@@ -681,7 +680,7 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
         if asciiTab:
             raise Exception("For now, only FITS input is allowed !!")
         else:
-            galData = fits.open(galList)[1].data
+            galData = astropy.io.fits.open(galList)[1].data
 
         for igal, gal in enumerate(galData):
 

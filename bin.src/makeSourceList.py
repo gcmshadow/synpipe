@@ -4,13 +4,11 @@ import os
 import warnings
 
 import numpy as np
-
 import astropy.table
 
 import lsst.utils
 import lsst.pipe.base as pipeBase
 import lsst.pex.config as pexConfig
-
 import lsst.synpipe.makeRaDecCat as makeRaDecCat
 from lsst.synpipe.FakeSourceLib import SkyMapIdContainer
 

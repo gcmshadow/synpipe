@@ -7,6 +7,7 @@ Matches fakes based on position stored in the calibrated exposure image header
 import re
 import argparse
 import collections
+
 import numpy as np
 import astropy.table
 

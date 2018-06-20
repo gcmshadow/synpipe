@@ -1,10 +1,10 @@
+import numpy as np
+
 import lsst.afw.image
 import lsst.afw.geom
 import lsst.afw.math
 import lsst.pex.config
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
-
-import numpy as np
 
 
 class RandomStarFakeSourcesConfig(BaseFakeSourcesConfig):

@@ -3,11 +3,13 @@ matchFakes.py
 matches fakes based on position stored in the calibrated exposure image header
 """
 
-import lsst.daf.persistence as dafPersist
-import numpy as np
 import argparse
 import re
 import collections
+
+import numpy as np
+
+import lsst.daf.persistence as dafPersist
 
 
 def getFakeSources(rootdir, dataId, tol=0.1):

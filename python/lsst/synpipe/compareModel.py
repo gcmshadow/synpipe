@@ -4,7 +4,6 @@ Compare the input fake galaxy model to the output one
 import argparse
 
 import numpy as np
-
 import astropy.table
 
 import lsst.pipe.base

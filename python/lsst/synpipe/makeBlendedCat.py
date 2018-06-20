@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-# encoding: utf-8
 """Make a catalog of fakes that are highly blended."""
-
-from builtins import range
-from __future__ import (division, print_function)
 
 import os
 import random

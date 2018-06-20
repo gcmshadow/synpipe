@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# encoding: utf-8
-
 import numpy as np
 
 import lsst.afw.geom
@@ -39,6 +36,7 @@ class SkyMapIdContainer(pipeBase.DataIdContainer):
 
             self.refList += [namespace.butler.dataRef(datasetType="deepCoadd_skyMap", dataId=addId)
                              for addId in addList]
+
 
 def cropFakeImage(fakeImage, expBBox):
     """

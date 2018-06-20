@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 Create N random selected (RA, Dec) pairs within a desired region.
 The inputs can be:
@@ -8,9 +6,6 @@ The inputs can be:
    3. DataId for coadd image: (tract, patch, filter)
 """
 
-from builtins import map
-from builtins import zip
-from builtins import range
 import os
 import warnings
 
@@ -146,9 +141,9 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
             rangeRaDec = getImageRaDecRange(rootDir, dataId)
             randomRaDec = getRandomRaDec(nRand, rangeRaDec[0], rangeRaDec[1],
                                          rangeRaDec[2], rangeRaDec[3], rad=rad)
-        elif ('tract' in list(dataId.keys())
-              and 'patch' in list(dataId.keys())
-              and 'filter' in dataId.keys):
+        elif ('tract' in list(dataId.keys()) and
+              'patch' in list(dataId.keys()) and
+              'filter' in dataId.keys):
             # Input should be a coadd image
             rangeRaDec = getImageRaDecRange(rootDir, dataId,
                                             dataType='deepCoadd_calexp')
@@ -163,8 +158,7 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
                                          rangeRaDec['maxRa'],
                                          rangeRaDec['minDec'],
                                          rangeRaDec['maxDec'], rad=rad)
-        elif (type(rangeRaDec) is list
-              or type(rangeRaDec).__module__ == 'numpy'):
+        elif (type(rangeRaDec) is list or type(rangeRaDec).__module__ == 'numpy'):
             if len(rangeRaDec) >= 4:
                 randomRaDec = getRandomRaDec(nRand, rangeRaDec[0],
                                              rangeRaDec[1], rangeRaDec[2],
@@ -190,14 +184,14 @@ def makeRaDecCat(nRand, dataId=None, rangeRaDec=None, rad=None,
                 acpRegs = polyReadWkb(acpMask)
                 acpPrep = prep(acpRegs)
                 inside = list(map(lambda x, y: acpPrep.contains(Point(x, y)),
-                             raArr, decArr))
+                              raArr, decArr))
             else:
                 inside = np.isfinite(raArr)
             if os.path.isfile(rejMask):
                 rejRegs = polyReadWkb(rejMask)
                 rejPrep = prep(rejRegs)
                 masked = list(map(lambda x, y: rejPrep.contains(Point(x, y)),
-                             raArr, decArr))
+                              raArr, decArr))
             else:
                 masked = np.isnan(raArr)
             useful = list(map(lambda x, y: x and (not y), inside, masked))

@@ -1,20 +1,12 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-from builtins import str
-from builtins import range
-import re
 import os
 import argparse
 
-import collections
 import numpy as np
-import pyfits as fits
 import matplotlib.pyplot as pyplot
 
 import lsst.daf.persistence as dafPersist
-import lsst.afw.geom.ellipses as geomEllip
-from lsst.afw.table import SourceCatalog, SchemaMapper
 
 from distutils.version import StrictVersion
 
@@ -59,11 +51,8 @@ def getExpArray(root, tract, patch, filter):
     # Ugly work around in case the before and after Reruns are from different hscPipe
     try:
         exposure = butler.get(dataType, dataId, immediate=True)
-    except:
-        try:
-            exposure = butler.get('deepCoadd', dataId, immediate=True)
-        except:
-            raise
+    except Exception:
+        exposure = butler.get('deepCoadd', dataId, immediate=True)
 
     # get the maskedImage from the exposure, and the image from the mimg
     mimg = exposure.getMaskedImage()

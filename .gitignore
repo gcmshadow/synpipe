@@ -40,6 +40,8 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
+.pytest_cache
+pytest_session.txt
 nosetests.xml
 coverage.xml
 *,cover

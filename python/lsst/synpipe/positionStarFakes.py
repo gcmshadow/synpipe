@@ -1,12 +1,5 @@
-#!/usr/bin/env python
-# encoding: utf-8
-
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import str
 import numpy as np
-
-import pyfits as fits
+import astropy.io.fits
 
 import lsst.afw.geom as afwGeom
 import lsst.afw.math as afwMath
@@ -15,8 +8,6 @@ import lsst.pex.config as afwConfig
 
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 from lsst.pex.exceptions import InvalidParameterError
-
-from . import FakeSourceLib as fsl
 
 
 class PositionStarFakesConfig(BaseFakeSourcesConfig):
@@ -35,7 +26,7 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
         self.rng = afwMath.Random(seed=self.config.seed)
         self.npRand = np.random.RandomState(self.config.seed)
         try:
-            self.starData = fits.open(self.config.starList)[1].data
+            self.starData = astropy.io.fits.open(self.config.starList)[1].data
         except Exception:
             raise
 

@@ -1,21 +1,15 @@
-#!/usr/bin/env python
 """
 matchFakes.py.
 
 Matches fakes based on position stored in the calibrated exposure image header
 """
 
-from __future__ import division
-from __future__ import print_function
-
-from builtins import map
-from builtins import zip
 import re
 import argparse
 import collections
+
 import numpy as np
 import astropy.table
-from distutils.version import StrictVersion
 
 import lsst.daf.persistence as dafPersist
 import lsst.afw.geom.ellipses
@@ -135,7 +129,7 @@ def getFakeMatchesHeader(cal_md, sources, tol=1.0):
     for card in cal_md.names():
         m = fakename.match(card)
         if m is not None:
-            x, y = list(map(float, (cal_md.get(card)).split(',')))
+            x, y = list(map(float, (cal_md.getScalar(card)).split(',')))
             fakeXY[int(m.group(1))] = (x, y)
 
     srcX, srcY = sources.getX(), sources.getY()
@@ -289,15 +283,15 @@ def getFakeSources(butler, dataId, tol=1.0,
         midCoord = wcs.pixelToSky(midPoint)
         northSkyToPixelMatrix = wcs.linearizeSkyToPixel(midCoord, lsst.afw.geom.degrees)
         northSkyToPixelMatrix = northSkyToPixelMatrix.getLinear()
-        availExtras['thetaNorth']['value'] = lsst.afw.geom.Angle(np.arctan2(*tuple(northSkyToPixelMatrix
-                                             (lsst.afw.geom.Point2D(1.0, 0.0)))))
+        availExtras['thetaNorth']['value'] = (np.arctan2(*tuple(northSkyToPixelMatrix
+                                              (lsst.afw.geom.Point2D(1.0, 0.0)))))*lsst.afw.geom.radians
 
     if 'visit' in extraCols:
         availExtras['visit']['value'] = dataId['visit']
     if 'ccd' in extraCols:
         availExtras['ccd']['value'] = dataId['ccd']
     if 'zeropoint' in extraCols:
-        zeropoint = 2.5 * np.log10(cal_md.get('FLUXMAG0'))
+        zeropoint = 2.5 * np.log10(cal_md.getScalar('FLUXMAG0'))
         availExtras['zeropoint']['value'] = zeropoint
 
     if radecMatch is None:
@@ -421,7 +415,7 @@ def getAstroTable(src, mags=True):
             if type(src[0].get(nameKey)) is quadrupole:
                 """Check for shape measurements"""
                 reff, q, theta = list(zip(*[getEllipse(s.get(nameKey))
-                                       for s in src]))
+                                      for s in src]))
                 tab.add_column(astropy.table.Column(name=name+'_a',
                                                     data=reff))
                 tab.add_column(astropy.table.Column(name=name+'_q',
@@ -431,8 +425,7 @@ def getAstroTable(src, mags=True):
             elif type(src[0].get(nameKey)) is lsst.afw.geom.SpherePoint:
                 """Check for coordinate measurements"""
                 x, y = list(zip(*[(s.get(nameKey).getRa().asDegrees(),
-                              s.get(nameKey).getDec().asDegrees())
-                             for s in src]))
+                            s.get(nameKey).getDec().asDegrees()) for s in src]))
                 tab.add_column(astropy.table.Column(name=name+'_ra', data=x))
                 tab.add_column(astropy.table.Column(name=name+'_dec', data=y))
             else:

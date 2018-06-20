@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-from __future__ import print_function
-from builtins import str
 import os
 import argparse
 import itertools
+
 import numpy as np
+
 import lsst.daf.persistence as dafPersist
 from distutils.version import StrictVersion
 

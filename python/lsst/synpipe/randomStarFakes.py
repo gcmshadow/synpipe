@@ -1,13 +1,10 @@
-from __future__ import print_function
-from builtins import range
+import numpy as np
+
 import lsst.afw.image
 import lsst.afw.geom
 import lsst.afw.math
 import lsst.pex.config
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
-
-import lsst.synpipe.FakeSourceLib as fsl
-import numpy as np
 
 
 class RandomStarFakeSourcesConfig(BaseFakeSourcesConfig):

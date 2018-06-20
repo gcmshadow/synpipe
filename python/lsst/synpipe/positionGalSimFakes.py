@@ -1,14 +1,8 @@
-#!/usr/bin/env python
-# encoding: utf-8
-
-from __future__ import print_function
-from __future__ import absolute_import
-from builtins import str
 import os
 import fcntl
 
 import numpy as np
-import pyfits as fits
+import astropy.io.fits
 
 import lsst.afw.image
 import lsst.afw.geom
@@ -18,7 +12,6 @@ import lsst.pex.config as lsstConfig
 
 from lsst.pipe.tasks.fakes import BaseFakeSourcesConfig, BaseFakeSourcesTask
 
-from . import FakeSourceLib as fsl
 from . import makeFakeGalaxy as makeFake
 
 
@@ -62,7 +55,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
         print("RNG seed:", self.config.seed)
         self.rng = lsst.afw.math.Random(seed=self.config.seed)
         self.npRand = np.random.RandomState(self.config.seed)
-        self.galData = fits.open(self.config.galList)[1].data
+        self.galData = astropy.io.fits.open(self.config.galList)[1].data
 
     def run(self, exposure, background):
         self.log.info("Adding fake galaxies at real positions")
@@ -129,7 +122,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
             #  The returned image is normalized to sum to unity.
             try:
                 psfImage = psf.computeKernelImage(galXY)
-            except:
+            except Exception:
                 # There may not be any data at this point, and the object
                 # should be skipped
                 continue

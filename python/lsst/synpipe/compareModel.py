@@ -1,12 +1,9 @@
-#!/usr/bin/env python
 """
 Compare the input fake galaxy model to the output one
 """
-from __future__ import absolute_import
 import argparse
 
 import numpy as np
-
 import astropy.table
 
 import lsst.pipe.base
@@ -94,7 +91,7 @@ def main(root, visit, ccds, galType='sersic', output='outputs/'):
         try:
             temp = getFakeSources(butler, dataId, tol=1.0,
                                   visit=True, ccd=True)
-        except:
+        except Exception:
             continue
         if fakeTable is None:
             fakeTable = temp.copy(True)
@@ -103,8 +100,8 @@ def main(root, visit, ccds, galType='sersic', output='outputs/'):
 
     npTable = writeNumpyTable(fakeTable)
     rerunName = root.split('/')[-2]
-    fitsTable = astropy.table.Table(npTable).write(output+'/'+rerunName +
-                                                   '_galMags.txt', format='ascii')
+    tableFileName = output + '/' + rerunName + '_galMags.txt'
+    astropy.table.Table(npTable).write(tableFileName, format='ascii')
 
 
 if __name__ == '__main__':

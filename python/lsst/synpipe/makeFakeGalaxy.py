@@ -1,7 +1,7 @@
 import warnings
 
 import numpy as np
-import astropy.fits.io
+from astropy.io import fits
 
 import galsim
 
@@ -605,7 +605,7 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
                                                  ('b_a', 'float'),
                                                  ('theta', 'float')])
         else:
-            galData = astropy.io.fits.open(galList)[1].data
+            galData = fits.open(galList)[1].data
 
         for igal, gal in enumerate(galData):
 
@@ -629,7 +629,7 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
         if asciiTab:
             raise Exception("For now, only FITS input is allowed !!")
         else:
-            galData = astropy.io.fits.open(galList)[1].data
+            galData = fits.open(galList)[1].data
 
         for igal, gal in enumerate(galData):
 
@@ -680,7 +680,7 @@ def testMakeFake(galList, asciiTab=False, single=True, double=True, real=True):
         if asciiTab:
             raise Exception("For now, only FITS input is allowed !!")
         else:
-            galData = astropy.io.fits.open(galList)[1].data
+            galData = fits.open(galList)[1].data
 
         for igal, gal in enumerate(galData):
 

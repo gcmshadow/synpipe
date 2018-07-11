@@ -1,5 +1,5 @@
 import numpy as np
-import astropy.io.fits
+from astropy.io import fits
 
 import lsst.afw.geom as afwGeom
 import lsst.afw.math as afwMath
@@ -26,7 +26,7 @@ class PositionStarFakesTask(BaseFakeSourcesTask):
         self.rng = afwMath.Random(seed=self.config.seed)
         self.npRand = np.random.RandomState(self.config.seed)
         try:
-            self.starData = astropy.io.fits.open(self.config.starList)[1].data
+            self.starData = fits.open(self.config.starList)[1].data
         except Exception:
             raise
 

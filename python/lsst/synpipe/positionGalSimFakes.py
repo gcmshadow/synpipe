@@ -2,7 +2,7 @@ import os
 import fcntl
 
 import numpy as np
-import astropy.io.fits
+from astropy.io import fits
 
 import lsst.afw.image
 import lsst.afw.geom
@@ -55,7 +55,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
         print("RNG seed:", self.config.seed)
         self.rng = lsst.afw.math.Random(seed=self.config.seed)
         self.npRand = np.random.RandomState(self.config.seed)
-        self.galData = astropy.io.fits.open(self.config.galList)[1].data
+        self.galData = fits.open(self.config.galList)[1].data
 
     def run(self, exposure, background):
         self.log.info("Adding fake galaxies at real positions")

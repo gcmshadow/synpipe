@@ -26,7 +26,7 @@ class OnlyFakesMergeTask(mBand.MeasureMergedCoaddSourcesTask):
     # OnlyFakesMergeConfig to avoid having to fix overridden config parameters
     ConfigClass = mBand.MeasureMergedCoaddSourcesConfig
 
-    def run(self, patchRef):
+    def runDataRef(self, patchRef):
         """Measure and deblend"""
 
         exposure = patchRef.get(self.config.coaddName + "Coadd", immediate=True)

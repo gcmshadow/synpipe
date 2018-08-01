@@ -34,6 +34,10 @@ var/
 pip-log.txt
 pip-delete-this-directory.txt
 
+# lsstsw
+_build.sh
+_build.tags
+
 # Unit test / coverage reports
 htmlcov/
 .tox/

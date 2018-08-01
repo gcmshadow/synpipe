@@ -32,38 +32,38 @@ def combineWithForce(meas, force):
     newSchema.addField('force_deblend_nChild', type=np.int32)
     newSchema.addField('force_base_ClassificationExtendedness_value', type=float)
     newSchema.addField('force_ext_photometryKron_KronFlux_flux', type=float)
-    newSchema.addField('force_ext_photometryKron_KronFlux_fluxSigma', type=float)
+    newSchema.addField('force_ext_photometryKron_KronFlux_fluxErr', type=float)
     newSchema.addField('force_base_PsfFlux_flux', type=float)
-    newSchema.addField('force_base_PsfFlux_fluxSigma', type=float)
+    newSchema.addField('force_base_PsfFlux_fluxErr', type=float)
     newSchema.addField('force_ext_photometryKron_KronFlux_apCorr', type=float)
-    newSchema.addField('force_ext_photometryKron_KronFlux_apCorrSigma', type=float)
+    newSchema.addField('force_ext_photometryKron_KronFlux_apCorrErr', type=float)
     newSchema.addField('force_base_PsfFlux_apCorr', type=float)
-    newSchema.addField('force_base_PsfFlux_apCorrSigma', type=float)
+    newSchema.addField('force_base_PsfFlux_apCorrErr', type=float)
     newSchema.addField('force_modelfit_CModel_flux', type=float)
-    newSchema.addField('force_modelfit_CModel_fluxSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_fluxErr', type=float)
     newSchema.addField('force_modelfit_CModel_fracDev', type=float)
     newSchema.addField('force_modelfit_CModel_exp_flux', type=float)
-    newSchema.addField('force_modelfit_CModel_exp_fluxSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_exp_fluxErr', type=float)
     newSchema.addField('force_modelfit_CModel_dev_flux', type=float)
-    newSchema.addField('force_modelfit_CModel_dev_fluxSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_dev_fluxErr', type=float)
     newSchema.addField('force_modelfit_CModel_apCorr', type=float)
-    newSchema.addField('force_modelfit_CModel_apCorrSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_apCorrErr', type=float)
     newSchema.addField('force_modelfit_CModel_exp_apCorr', type=float)
-    newSchema.addField('force_modelfit_CModel_exp_apCorrSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_exp_apCorrErr', type=float)
     newSchema.addField('force_modelfit_CModel_dev_apCorr', type=float)
-    newSchema.addField('force_modelfit_CModel_dev_apCorrSigma', type=float)
+    newSchema.addField('force_modelfit_CModel_dev_apCorrErr', type=float)
 
     newCols = ['deblend_nChild', 'base_ClassificationExtendedness_value',
-               'ext_photometryKron_KronFlux_flux', 'ext_photometryKron_KronFlux_fluxSigma',
-               'base_PsfFlux_flux', 'base_PsfFlux_fluxSigma',
-               'ext_photometryKron_KronFlux_apCorr', 'ext_photometryKron_KronFlux_apCorrSigma',
-               'base_PsfFlux_apCorr', 'base_PsfFlux_apCorrSigma',
-               'modelfit_CModel_flux', 'modelfit_CModel_fluxSigma',
-               'modelfit_CModel_exp_apCorr', 'modelfit_CModel_exp_apCorrSigma',
+               'ext_photometryKron_KronFlux_flux', 'ext_photometryKron_KronFlux_fluxErr',
+               'base_PsfFlux_flux', 'base_PsfFlux_fluxErr',
+               'ext_photometryKron_KronFlux_apCorr', 'ext_photometryKron_KronFlux_apCorrErr',
+               'base_PsfFlux_apCorr', 'base_PsfFlux_apCorrErr',
+               'modelfit_CModel_flux', 'modelfit_CModel_fluxErr',
+               'modelfit_CModel_exp_apCorr', 'modelfit_CModel_exp_apCorrErr',
                'modelfit_CModel_exp_flux', 'modelfit_CModel_exp_flux',
-               'modelfit_CModel_exp_apCorr', 'modelfit_CModel_exp_apCorrSigma',
-               'modelfit_CModel_dev_flux', 'modelfit_CModel_dev_fluxSigma',
-               'modelfit_CModel_dev_apCorr', 'modelfit_CModel_dev_apCorrSigma',
+               'modelfit_CModel_exp_apCorr', 'modelfit_CModel_exp_apCorrErr',
+               'modelfit_CModel_dev_flux', 'modelfit_CModel_dev_fluxErr',
+               'modelfit_CModel_dev_apCorr', 'modelfit_CModel_dev_apCorrErr',
                'modelfit_CModel_fracDev']
     measAlias = meas.schema.getAliasMap()
     newAlias = newSchema.getAliasMap()

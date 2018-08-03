@@ -193,7 +193,7 @@ class MakeFakeInputsTask(pipeBase.CmdLineTask):
     _DefaultName = 'makeFakeInputs'
     ConfigClass = MakeFakeInputsConfig
 
-    def run(self, dataRef):
+    def runDataRef(self, dataRef):
         skyMap = dataRef.get('deepCoadd_skyMap', immediate=True)
         tractId = dataRef.dataId['tract']
         tract = skyMap[tractId]

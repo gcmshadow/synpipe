@@ -31,21 +31,21 @@ def combineWithForce(meas, force):
     # Add new fields
     newSchema.addField('force_deblend_nChild', type=np.int32)
     newSchema.addField('force_base_ClassificationExtendedness_value', type=float)
-    newSchema.addField('force_ext_photometryKron_KronFlux_flux', type=float)
-    newSchema.addField('force_ext_photometryKron_KronFlux_fluxErr', type=float)
-    newSchema.addField('force_base_PsfFlux_flux', type=float)
-    newSchema.addField('force_base_PsfFlux_fluxErr', type=float)
+    newSchema.addField('force_ext_photometryKron_KronFlux_instFlux', type=float)
+    newSchema.addField('force_ext_photometryKron_KronFlux_instFluxErr', type=float)
+    newSchema.addField('force_base_PsfFlux_instFlux', type=float)
+    newSchema.addField('force_base_PsfFlux_instFluxErr', type=float)
     newSchema.addField('force_ext_photometryKron_KronFlux_apCorr', type=float)
     newSchema.addField('force_ext_photometryKron_KronFlux_apCorrErr', type=float)
     newSchema.addField('force_base_PsfFlux_apCorr', type=float)
     newSchema.addField('force_base_PsfFlux_apCorrErr', type=float)
-    newSchema.addField('force_modelfit_CModel_flux', type=float)
-    newSchema.addField('force_modelfit_CModel_fluxErr', type=float)
+    newSchema.addField('force_modelfit_CModel_instFlux', type=float)
+    newSchema.addField('force_modelfit_CModel_instFluxErr', type=float)
     newSchema.addField('force_modelfit_CModel_fracDev', type=float)
-    newSchema.addField('force_modelfit_CModel_exp_flux', type=float)
-    newSchema.addField('force_modelfit_CModel_exp_fluxErr', type=float)
-    newSchema.addField('force_modelfit_CModel_dev_flux', type=float)
-    newSchema.addField('force_modelfit_CModel_dev_fluxErr', type=float)
+    newSchema.addField('force_modelfit_CModel_exp_instFlux', type=float)
+    newSchema.addField('force_modelfit_CModel_exp_instFluxErr', type=float)
+    newSchema.addField('force_modelfit_CModel_dev_instFlux', type=float)
+    newSchema.addField('force_modelfit_CModel_dev_instFluxErr', type=float)
     newSchema.addField('force_modelfit_CModel_apCorr', type=float)
     newSchema.addField('force_modelfit_CModel_apCorrErr', type=float)
     newSchema.addField('force_modelfit_CModel_exp_apCorr', type=float)
@@ -54,15 +54,15 @@ def combineWithForce(meas, force):
     newSchema.addField('force_modelfit_CModel_dev_apCorrErr', type=float)
 
     newCols = ['deblend_nChild', 'base_ClassificationExtendedness_value',
-               'ext_photometryKron_KronFlux_flux', 'ext_photometryKron_KronFlux_fluxErr',
-               'base_PsfFlux_flux', 'base_PsfFlux_fluxErr',
+               'ext_photometryKron_KronFlux_instFlux', 'ext_photometryKron_KronFlux_instFluxErr',
+               'base_PsfFlux_instFlux', 'base_PsfFlux_instFluxErr',
                'ext_photometryKron_KronFlux_apCorr', 'ext_photometryKron_KronFlux_apCorrErr',
                'base_PsfFlux_apCorr', 'base_PsfFlux_apCorrErr',
-               'modelfit_CModel_flux', 'modelfit_CModel_fluxErr',
+               'modelfit_CModel_instFlux', 'modelfit_CModel_instFluxErr',
                'modelfit_CModel_exp_apCorr', 'modelfit_CModel_exp_apCorrErr',
-               'modelfit_CModel_exp_flux', 'modelfit_CModel_exp_flux',
+               'modelfit_CModel_exp_instFlux', 'modelfit_CModel_exp_instFlux',
                'modelfit_CModel_exp_apCorr', 'modelfit_CModel_exp_apCorrErr',
-               'modelfit_CModel_dev_flux', 'modelfit_CModel_dev_fluxErr',
+               'modelfit_CModel_dev_instFlux', 'modelfit_CModel_dev_instFluxErr',
                'modelfit_CModel_dev_apCorr', 'modelfit_CModel_dev_apCorrErr',
                'modelfit_CModel_fracDev']
     measAlias = meas.schema.getAliasMap()
@@ -456,10 +456,10 @@ def getAstroTable(src, mags=True):
             if colMatch:
                 zp = tab['zeropoint'] if not re.search('apcorr', col) else 0.0
                 mag, magerr = getMag(tab[col], tab[col+'.err'], zp)
-                tab.add_column(astropy.table.Column(name=re.sub('flux', 'mag',
+                tab.add_column(astropy.table.Column(name=re.sub('instFlux', 'mag',
                                                                 col),
                                                     data=mag))
-                tab.add_column(astropy.table.Column(name=re.sub('flux', 'mag',
+                tab.add_column(astropy.table.Column(name=re.sub('instFlux', 'mag',
                                                                 col+'.err'),
                                                     data=magerr))
 

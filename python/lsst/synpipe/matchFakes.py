@@ -23,7 +23,7 @@ NO_FOOTPRINT = lsst.afw.table.SOURCE_IO_NO_FOOTPRINTS
 def combineWithForce(meas, force):
     """Combine the meas and forced_src catalogs."""
     if len(meas) != len(force):
-        raise Exception("# Meas and Forced_src catalogs should have " +
+        raise Exception("# Meas and Forced_src catalogs should have "
                         "the same size!")
     mapper = SchemaMapper(meas.schema)
     mapper.addMinimalSchema(meas.schema)
@@ -105,7 +105,7 @@ def matchToFakeCatalog(sources, fakeCatalog):
     or it will throw a TypeError
     """
     if not isinstance(sources, astropy.table.Table):
-        raise TypeError("Expect an astropy table for sources" +
+        raise TypeError("Expect an astropy table for sources"
                         " use getAstroTable to convert")
 
     fakes = astropy.table.Table().read(fakeCatalog)
@@ -267,7 +267,7 @@ def getFakeSources(butler, dataId, tol=1.0,
             sources = combineWithForce(meas, force)
             cal = butler.get(coaddData, dataId, immediate=True)
             cal_md = butler.get(coaddMeta, dataId, immediate=True)
-    except RuntimeError as e:
+    except RuntimeError:
         print("skipping", dataId)
         return None
 
@@ -445,10 +445,10 @@ def getAstroTable(src, mags=True):
         # This is a horrible hack, but I don't think we can use the slots,
         # since not all the fluxes end up in the slots
         for col in tab.colnames:
-            colMatch = (re.match('^flux\.[a-z]+$', col) or
-                        re.match('^flux\.[a-z]+.apcorr$', col) or
-                        re.match('^force.flux\.[a-z]+$', col) or
-                        re.match('^force.flux\.[a-z]+.apcorr$', col) or
+            colMatch = (re.match(r'^flux\.[a-z]+$', col) or
+                        re.match(r'^flux\.[a-z]+.apcorr$', col) or
+                        re.match(r'^force.flux\.[a-z]+$', col) or
+                        re.match(r'^force.flux\.[a-z]+.apcorr$', col) or
                         re.match('^force.cmodel.+flux$', col) or
                         re.match('^force.cmodel.+flux.apcorr$', col) or
                         re.match('^cmodel.+flux$', col) or

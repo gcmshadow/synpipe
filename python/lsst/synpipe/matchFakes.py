@@ -267,7 +267,7 @@ def getFakeSources(butler, dataId, tol=1.0,
             sources = combineWithForce(meas, force)
             cal = butler.get(coaddData, dataId, immediate=True)
             cal_md = butler.get(coaddMeta, dataId, immediate=True)
-    except RuntimeError as e:
+    except RuntimeError:
         print("skipping", dataId)
         return None
 

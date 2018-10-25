@@ -445,10 +445,10 @@ def getAstroTable(src, mags=True):
         # This is a horrible hack, but I don't think we can use the slots,
         # since not all the fluxes end up in the slots
         for col in tab.colnames:
-            colMatch = (re.match('^flux\.[a-z]+$', col) or
-                        re.match('^flux\.[a-z]+.apcorr$', col) or
-                        re.match('^force.flux\.[a-z]+$', col) or
-                        re.match('^force.flux\.[a-z]+.apcorr$', col) or
+            colMatch = (re.match(r'^flux\.[a-z]+$', col) or
+                        re.match(r'^flux\.[a-z]+.apcorr$', col) or
+                        re.match(r'^force.flux\.[a-z]+$', col) or
+                        re.match(r'^force.flux\.[a-z]+.apcorr$', col) or
                         re.match('^force.cmodel.+flux$', col) or
                         re.match('^force.cmodel.+flux.apcorr$', col) or
                         re.match('^cmodel.+flux$', col) or

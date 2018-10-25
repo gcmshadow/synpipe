@@ -23,7 +23,7 @@ NO_FOOTPRINT = lsst.afw.table.SOURCE_IO_NO_FOOTPRINTS
 def combineWithForce(meas, force):
     """Combine the meas and forced_src catalogs."""
     if len(meas) != len(force):
-        raise Exception("# Meas and Forced_src catalogs should have " +
+        raise Exception("# Meas and Forced_src catalogs should have "
                         "the same size!")
     mapper = SchemaMapper(meas.schema)
     mapper.addMinimalSchema(meas.schema)
@@ -105,7 +105,7 @@ def matchToFakeCatalog(sources, fakeCatalog):
     or it will throw a TypeError
     """
     if not isinstance(sources, astropy.table.Table):
-        raise TypeError("Expect an astropy table for sources" +
+        raise TypeError("Expect an astropy table for sources"
                         " use getAstroTable to convert")
 
     fakes = astropy.table.Table().read(fakeCatalog)

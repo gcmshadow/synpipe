@@ -6,7 +6,7 @@ import argparse
 
 import lsst.afw.image
 import lsst.daf.persistence
-import lsst.afw.display.ds9 as ds9
+import lsst.afw.display as afwDisplay
 import lsst.afw.display.utils
 
 from . import matchFakes
@@ -16,7 +16,7 @@ import numpy.random
 
 def getMosaic(sources, exposure, idname):
     """
-    make a ds9 mosaic for the given source list from the given exposure
+    make a mosaic for the given source list from the given exposure
 
     stolen from psfMosaic.py on the sphinx documentation
     """
@@ -33,7 +33,7 @@ def getMosaic(sources, exposure, idname):
         subImages.append(subimg)
         labels.append('ID=%s' % str(src.get(idname)))
 
-    m = lsst.afw.display.utils.Mosaic()
+    m = afwDisplay.utils.Mosaic()
     m.setGutter(2)
     m.setBackground(0)
     m.setMode("square")
@@ -43,8 +43,9 @@ def getMosaic(sources, exposure, idname):
         m.append(img)
     mosaic = m.makeMosaic()
 
-    # display it with labels in ds9
-    ds9.mtv(mosaic)
+    # display it with labels
+    disp = afwDisplay.Display()
+    disp.mtv(mosaic, title="mosaic")
     m.drawLabels(labels)
 
 

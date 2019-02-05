@@ -22,7 +22,7 @@ def tractFindVisits(rerun, tract, filter='HSC-I', patch=None,
     else:
         coaddData = "deepCoadd"
 
-    if patch is not '':
+    if patch != '':
         """
         Only 1 Patch is required
         """

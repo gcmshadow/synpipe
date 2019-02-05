@@ -29,7 +29,7 @@ def makeGalaxy(flux, gal, psfImage,
     All the necessary keywords need to be in the fits catalog,
     including maybe drawMethod and trunc...
     """
-    if galType is 'sersic':
+    if galType == 'sersic':
         return galSimFakeSersic(flux, gal, psfImage=psfImage,
                                 trunc=trunc,
                                 drawMethod=drawMethod,
@@ -38,7 +38,7 @@ def makeGalaxy(flux, gal, psfImage,
                                 addShear=addShear,
                                 addPoisson=addPoisson)
 
-    if galType is 'dsersic':
+    if galType == 'dsersic':
         # TODO: addShear option is not available for double Sersic yet
         (comp1, comp2) = parseDoubleSersic(flux, gal)
         return galSimFakeDoubleSersic(comp1, comp2, psfImage=psfImage,
@@ -49,7 +49,7 @@ def makeGalaxy(flux, gal, psfImage,
                                       addShear=addShear,
                                       addPoisson=addPoisson)
 
-    if galType is 'real':
+    if galType == 'real':
         # TODO: For real galaxies, we need to decide which to use: index in the
         # catalog or Object ID.  Now, I just use Index
         (real_galaxy_catalog, index) = parseRealGalaxy(gal)
@@ -68,7 +68,7 @@ def makeGalaxy(flux, gal, psfImage,
                                 transform=transform,
                                 addPoisson=addPoisson)
 
-    if galType is 'cosmos':
+    if galType == 'cosmos':
         if cosmosCat is None or calib is None:
             raise Exception("# No COSMOSCatalog() provided!")
         return galSimFakeCosmos(cosmosCat, calib, gal,

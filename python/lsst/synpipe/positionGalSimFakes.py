@@ -71,7 +71,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
         if not os.path.isfile(skipLog):
             os.system('touch ' + skipLog)
 
-        if self.config.galType is 'cosmos':
+        if self.config.galType == 'cosmos':
             import galsim
             exLevel = self.config.exclusionLevel
             cosmosCat = galsim.COSMOSCatalog(exclusion_level=exLevel)
@@ -130,7 +130,7 @@ class PositionGalSimFakesTask(BaseFakeSourcesTask):
                 addShear = self.config.addShear
                 prec = self.config.sersic_prec
                 galType = self.config.galType
-                if self.config.galType is not 'cosmos':
+                if self.config.galType != 'cosmos':
                     galArray = makeFake.makeGalaxy(flux, gal,
                                                    psfImage.getArray(),
                                                    galType=galType,

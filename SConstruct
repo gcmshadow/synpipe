@@ -1,4 +1,4 @@
 # -*- python -*-
 from lsst.sconsUtils import scripts
 
-scripts.BasicSConstruct("synpipe")
+scripts.BasicSConstruct("synpipe", disableCc=True)

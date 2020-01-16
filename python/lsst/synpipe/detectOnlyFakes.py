@@ -1,3 +1,5 @@
+from deprecated.sphinx import deprecated
+
 import lsst.pex.config as pexConfig
 import lsst.pipe.base as pipeBase
 import lsst.afw.table as afwTable
@@ -26,7 +28,7 @@ class OnlyFakesDetectionTask(measAlg.SourceDetectionTask):
     # from processCoaddConfig.setDefaults and from the camera-specific $OBS_SUBARU/config
     ConfigClass = measAlg.SourceDetectionConfig
 
-    def makeSourceCatalog(self, table, exposure, doSmooth=True, sigma=None, clearMask=True):
+    def run(self, table, exposure, doSmooth=True, sigma=None, clearMask=True):
         if self.negativeFlagKey is not None and self.negativeFlagKey not in table.getSchema():
             raise ValueError("Table has incorrect Schema")
 
@@ -62,3 +64,8 @@ class OnlyFakesDetectionTask(measAlg.SourceDetectionTask):
             fpSets.positive.makeSources(sources)
 
         return pipeBase.Struct(sources=sources, fpSets=fpSets)
+
+    @deprecated(reason="Replaced by OnlyFakesDetectionTask.run(). Will be removed after v20.",
+                category=FutureWarning)
+    def makeSourceCatalog(self, *args, **kwargs):
+        return self.run(*args, **kwargs)

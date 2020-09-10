@@ -1,6 +1,3 @@
-setupRequired(daf_persistence)
-setupRequired(pex_config)
-setupRequired(afw)
 setupRequired(pipe_base)
 setupRequired(pipe_tasks)
 
